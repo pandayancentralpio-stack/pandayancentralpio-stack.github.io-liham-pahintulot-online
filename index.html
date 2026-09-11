@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandayan - Liham Pahintulot Login</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --burgundy: #800000;
+      --burgundy-dark: #5a0000;
+      --yellow: #ffd700;
+      --yellow-light: #fff5cc;
+      --white: #ffffff;
+      --gray-light: #f4f6f9;
+      --text-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--burgundy);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      background-color: var(--white);
+      width: 100%;
+      max-width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      overflow: hidden;
+      border: 3px solid var(--yellow);
+    }
+
+    .auth-header {
+      background-color: var(--burgundy);
+      color: var(--yellow);
+      text-align: center;
+      padding: 25px 20px 15px 20px;
+      border-bottom: 2px solid var(--yellow);
+    }
+
+    .auth-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .auth-header p {
+      color: var(--white);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .auth-body {
+      padding: 30px 25px;
+    }
+
+    .form-title {
+      text-align: center;
+      color: var(--burgundy);
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper i.input-icon {
+      position: absolute;
+      left: 12px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 12px 40px 12px 35px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper input:focus {
+      border-color: var(--burgundy);
+      outline: none;
+      box-shadow: 0 0 5px rgba(128, 0, 0, 0.3);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .toggle-password:hover {
+      color: var(--burgundy);
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .remember-me input {
+      accent-color: var(--burgundy);
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--burgundy);
+      color: var(--white);
+      border: none;
+      padding: 13px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--burgundy-dark);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .form-footer a {
+      color: var(--burgundy);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Notification Alert Box */
+    .alert {
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>PANDAYAN</h1>
+      <p>Liham Pahintulot Online System</p>
+    </div>
+
+    <div class="auth-body">
+      <!-- Notification Area -->
+      <div id="alertBox" class="alert"></div>
+
+      <!-- LOG IN FORM -->
+      <form id="loginForm">
+        <div class="form-title">Mag-Log In</div>
+
+        <div class="form-group">
+          <label for="loginUsername">Username</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input type="text" id="loginUsername" placeholder="Isulat ang username" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="loginPassword" placeholder="Isulat ang password" required>
+            <i class="fa-solid fa-eye toggle-password" onclick="togglePasswordVisibility('loginPassword', this)"></i>
+          </div>
+        </div>
+
+        <div class="remember-me">
+          <input type="checkbox" id="rememberMe" checked>
+          <label for="rememberMe">Manatiling Naka-login (Stay Logged In)</label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnLogin">
+          <span id="btnLoginText">LOG IN</span>
+        </button>
+
+        <div class="form-footer">
+          Wala pang account? <a href="#" onclick="switchForm('register')">Mag-register dito</a>
+        </div>
+      </form>
+
+      <!-- REGISTRATION FORM -->
+      <form id="registerForm" class="hidden">
+        <div class="form-title">Gumawa ng Account</div>
+
+        <div class="form-group">
+          <label for="regFullName">Pangalan ng Kapwa (Full Name)</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-id-card input-icon"></i>
+            <input type="text" id="regFullName" placeholder="Juan Dela Cruz" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regUsername">Username</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user input-icon"></i>
+            <input type="text" id="regUsername" placeholder="Username" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock input-icon"></i>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <i class="fa-solid fa-eye toggle-password" onclick="togglePasswordVisibility('regPassword', this)"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address (Optional)</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope input-icon"></i>
+            <input type="email" id="regEmail" placeholder="kapwa@pandayan.com.ph">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnRegister">
+          <span id="btnRegText">REGISTER ACCOUNT</span>
+        </button>
+
+        <div class="form-footer">
+          May account na? <a href="#" onclick="switchForm('login')">Mag-log in dito</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Deployed Apps Script Web App URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
+
+    // Auto Check Existing Active Session
+    window.addEventListener('DOMContentLoaded', () => {
+      const activeUser = localStorage.getItem('pandayan_user');
+      if (activeUser) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+
+    // Form Switcher (Log-in <-> Register)
+    function switchForm(type) {
+      hideAlert();
+      if (type === 'register') {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('registerForm').classList.remove('hidden');
+      } else {
+        document.getElementById('registerForm').classList.add('hidden');
+        document.getElementById('loginForm').classList.remove('hidden');
+      }
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility(inputId, icon) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // Show Alert Message Box
+    function showAlert(message, type) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.className = `alert alert-${type}`;
+      alertBox.innerText = message;
+      alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+    }
+
+    // Handle Login Submission
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+
+      const btn = document.getElementById('btnLogin');
+      const btnText = document.getElementById('btnLoginText');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="spinner"></span> Logging in...';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'login',
+            payload: { username, password }
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showAlert('Matagumpay na Naka-login! Inililipat ka na sa Dashboard...', 'success');
+          
+          if (rememberMe) {
+            localStorage.setItem('pandayan_user', JSON.stringify(result.user));
+          } else {
+            sessionStorage.setItem('pandayan_user', JSON.stringify(result.user));
+          }
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1000);
+        } else {
+          showAlert(result.message, 'danger');
+          btn.disabled = false;
+          btnText.innerText = 'LOG IN';
+        }
+
+      } catch (err) {
+        showAlert('Nagkaroon ng error sa koneksyon. Pakisubukan ulit.', 'danger');
+        btn.disabled = false;
+        btnText.innerText = 'LOG IN';
+      }
+    });
+
+    // Handle Registration Submission
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const kapwaName = document.getElementById('regFullName').value.trim();
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const email = document.getElementById('regEmail').value.trim();
+
+      const btn = document.getElementById('btnRegister');
+      const btnText = document.getElementById('btnRegText');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="spinner"></span> Isinusumite...';
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'register',
+            payload: { kapwaName, username, password, email }
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showAlert(result.message, 'success');
+          document.getElementById('registerForm').reset();
+          setTimeout(() => {
+            switchForm('login');
+          }, 2000);
+        } else {
+          showAlert(result.message, 'danger');
+        }
+
+      } catch (err) {
+        showAlert('Nagkaroon ng error sa koneksyon. Pakisubukan ulit.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btnText.innerText = 'REGISTER ACCOUNT';
+      }
+    });
+  </script>
+</body>
+</html>
