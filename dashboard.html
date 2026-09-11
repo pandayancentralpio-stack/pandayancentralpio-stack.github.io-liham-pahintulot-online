@@ -4,121 +4,119 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pandayan - Liham Pahintulot Dashboard</title>
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --burgundy: #800000;
       --burgundy-dark: #5a0000;
       --yellow: #ffd700;
-      --yellow-light: #fffcc8;
       --white: #ffffff;
       --gray-bg: #f4f6f9;
       --text-dark: #333333;
       --status-pending: #ffc107;
       --status-approved: #28a745;
       --status-disapproved: #dc3545;
-      --status-ssu: #0d6efd;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: var(--gray-bg); display: flex; min-height: 100vh; }
 
-    /* Sidebar Styling */
-    .sidebar { width: 250px; background-color: var(--burgundy); color: var(--white); display: flex; flex-direction: column; }
-    .sidebar-brand { padding: 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
-    .sidebar-brand h2 { color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
-    .sidebar-brand p { font-size: 11px; color: #fff; margin-top: 4px; }
-    .sidebar-menu { list-style: none; padding: 20px 0; }
-    .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 25px; color: var(--white); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
-    .sidebar-menu li.active a, .sidebar-menu li a:hover { background-color: var(--yellow); color: var(--burgundy); }
+    /* Redesigned Enhanced Sidebar */
+    .sidebar { width: 260px; background: linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-dark) 100%); color: var(--white); display: flex; flex-direction: column; box-shadow: 4px 0 10px rgba(0,0,0,0.15); }
+    .sidebar-brand { padding: 25px 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
+    .sidebar-brand h2 { color: var(--yellow); font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+    .sidebar-brand p { font-size: 11px; color: var(--white); margin-top: 4px; opacity: 0.9; }
 
-    /* Main Area Styling */
+    .user-profile-card { margin: 20px 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center; border: 1px solid rgba(255,215,0,0.3); }
+    .user-profile-card i { font-size: 35px; color: var(--yellow); margin-bottom: 8px; }
+    .user-profile-card .name { font-weight: 700; font-size: 14px; color: var(--white); }
+    .user-profile-card .role { font-size: 11px; color: var(--yellow); font-weight: 600; text-transform: uppercase; }
+
+    .sidebar-menu { list-style: none; padding: 10px 0; }
+    .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 25px; color: var(--white); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+    .sidebar-menu li.active a, .sidebar-menu li a:hover { background-color: var(--yellow); color: var(--burgundy); font-weight: 700; }
+
     .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
     .top-header { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .header-user { display: flex; align-items: center; gap: 15px; }
-    .user-badge { font-size: 14px; font-weight: 600; color: var(--text-dark); }
     .btn-logout { background-color: var(--burgundy); color: var(--white); border: none; padding: 8px 16px; border-radius: 5px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 12px; }
-    .btn-logout:hover { background-color: var(--burgundy-dark); }
 
     .content-body { padding: 25px 30px; }
-
-    /* Action Bar & Tabs */
     .tabs-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tab-btn { padding: 10px 18px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+    .tab-btn { padding: 10px 18px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
     .tab-btn.active { background-color: var(--burgundy); color: var(--white); border-color: var(--burgundy); }
 
-    .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-    .btn-primary { background-color: var(--burgundy); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; }
-    .btn-primary:hover { background-color: var(--burgundy-dark); }
+    .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { background-color: var(--burgundy); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-bulk { background-color: var(--status-approved); color: var(--white); border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; display: none; }
     .search-input { padding: 8px 15px; border: 1px solid #ccc; border-radius: 6px; width: 280px; font-size: 13px; }
 
-    /* Table Styling */
     .table-card { background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
     th { background-color: var(--burgundy); color: var(--white); padding: 12px 15px; font-weight: 700; white-space: nowrap; }
     td { padding: 12px 15px; border-bottom: 1px solid #eee; white-space: nowrap; }
-    tr:hover { background-color: #f9f9f9; }
-
-    .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: var(--white); text-transform: uppercase; }
+    
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: var(--white); }
     .badge-pending { background-color: var(--status-pending); color: #000; }
     .badge-approved { background-color: var(--status-approved); }
     .badge-disapproved { background-color: var(--status-disapproved); }
 
-    .btn-action { background-color: #0d6efd; color: var(--white); border: none; padding: 5px 12px; border-radius: 4px; font-weight: 700; font-size: 12px; cursor: pointer; }
-    
-    /* Pagination */
+    .pdf-link { color: #dc3545; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .pdf-link:hover { text-decoration: underline; }
+
     .pagination { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-top: 1px solid #eee; }
     .btn-page { padding: 6px 12px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
 
-    /* Modals */
+    /* Modal Styling */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
     .modal.active { display: flex; }
-    .modal-content { background: var(--white); border-radius: 8px; width: 100%; max-width: 650px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--burgundy); }
+    .modal-content { background: var(--white); border-radius: 8px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--burgundy); }
     .modal-header { background: var(--burgundy); color: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
     .modal-header h3 { font-size: 16px; color: var(--yellow); }
     .modal-close { color: var(--white); font-size: 20px; cursor: pointer; }
     .modal-body { padding: 20px; }
     .modal-footer { padding: 15px 20px; background: #f9f9f9; text-align: right; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px; }
 
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
-    .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; }
-
+    .view-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    .view-table th { background-color: #800000; color: white; width: 30%; padding: 8px; text-align: left; }
+    .view-table td { border: 1px solid #ddd; padding: 8px; }
+    
     .kawan-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
     .btn-add-kawan { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 5px; }
     .btn-remove-kawan { background: var(--status-disapproved); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
 
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
+    .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; }
     .hidden { display: none !important; }
-    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Navigation -->
+  <!-- Enhanced Sidebar -->
   <div class="sidebar">
     <div class="sidebar-brand">
       <h2>PANDAYAN</h2>
       <p>Liham Pahintulot Portal</p>
     </div>
+
+    <div class="user-profile-card">
+      <i class="fa-solid fa-circle-user"></i>
+      <div class="name" id="sidebarUserName">Kapwa User</div>
+      <div class="role" id="sidebarUserRole">Viewer</div>
+    </div>
+
     <ul class="sidebar-menu">
       <li class="active"><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
     </ul>
   </div>
 
-  <!-- Main Content Area -->
   <div class="main-content">
     <div class="top-header">
-      <h3 style="color: var(--burgundy);">Liham Pahintulot Dashboard</h3>
-      <div class="header-user">
-        <span class="user-badge" id="userInfoDisplay">Loading...</span>
-        <button class="btn-logout" onclick="logoutUser()">Log Out</button>
-      </div>
+      <h3 style="color: var(--burgundy);">Liham Pahintulot Online Dashboard</h3>
+      <button class="btn-logout" onclick="logoutUser()">Log Out</button>
     </div>
 
     <div class="content-body">
-      <!-- Dashboard Tabs -->
       <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('PENDING', this)"><i class="fa-solid fa-clock"></i> Pending Request</button>
         <button class="tab-btn" onclick="switchTab('APPROVED', this)"><i class="fa-solid fa-circle-check"></i> Approved Request</button>
@@ -126,35 +124,37 @@
         <button class="tab-btn" onclick="switchTab('SSU', this)"><i class="fa-solid fa-box-archive"></i> SSU Request</button>
       </div>
 
-      <!-- Action Bar -->
       <div class="action-bar">
-        <button class="btn-primary" onclick="openRequestModal()"><i class="fa-solid fa-plus"></i> REQUEST FORM</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-primary" onclick="openRequestModal()"><i class="fa-solid fa-plus"></i> REQUEST FORM</button>
+          <button class="btn-bulk" id="btnBulkApprove" onclick="bulkApprove()"><i class="fa-solid fa-check-double"></i> Bulk Approve (<span id="selectCount">0</span>)</button>
+        </div>
         <input type="text" id="searchInput" class="search-input" placeholder="Mag-search ng Request ID, Branch..." onkeyup="filterTable()">
       </div>
 
-      <!-- Data Table -->
       <div class="table-card">
         <table>
           <thead>
             <tr>
+              <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
               <th>#</th>
               <th>Date</th>
               <th>Request ID</th>
               <th>Request From</th>
               <th>Requested To</th>
               <th>Liham For</th>
-              <th>1st Approver (GE)</th>
-              <th>2nd Approver (Hatid-Sundo)</th>
-              <th>3rd Approver (Kawan)</th>
+              <th>GE</th>
+              <th>Hatid-Sundo</th>
+              <th>Kawan/Tilap</th>
+              <th>Liham PDF</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="10" style="text-align:center; padding: 20px;">Kinukuha ang data mula sa system...</td></tr>
+            <tr><td colspan="12" style="text-align:center; padding: 20px;">Kinukuha ang data mula sa system...</td></tr>
           </tbody>
         </table>
 
-        <!-- Table Pagination -->
         <div class="pagination">
           <span id="pageInfo" style="font-size: 12px; font-weight: 600;">Page 1 of 1</span>
           <div>
@@ -186,7 +186,6 @@
             </select>
           </div>
 
-          <!-- Dynamic Entry Fields based on Mode -->
           <div class="form-group hidden" id="modePasabayGroup">
             <label>Piliin ang Target Branch na Pagsasabayan</label>
             <select class="form-control" id="pasabayTargetBranch"></select>
@@ -220,7 +219,6 @@
             <select class="form-control" id="requestFrom" required></select>
           </div>
 
-          <!-- Dynamic Multiple Kawans Section -->
           <div class="form-group">
             <label>List of Kawan & P.O. Numbers</label>
             <div id="kawanContainer"></div>
@@ -255,19 +253,15 @@
     </div>
   </div>
 
-  <!-- VIEW / APPROVAL MODAL -->
+  <!-- VIEW / TRANSPARENT APPROVAL MODAL -->
   <div class="modal" id="viewModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3 id="viewModalTitle">Request Details</h3>
         <span class="modal-close" onclick="closeModal('viewModal')">&times;</span>
       </div>
-      <div class="modal-body" id="viewModalBody">
-        <!-- Content dynamically injected here -->
-      </div>
-      <div class="modal-footer" id="viewModalFooter">
-        <button type="button" class="btn-page" onclick="closeModal('viewModal')">Isara</button>
-      </div>
+      <div class="modal-body" id="viewModalBody"></div>
+      <div class="modal-footer" id="viewModalFooter"></div>
     </div>
   </div>
 
@@ -313,15 +307,13 @@
     let currentPage = 1;
     const recordsPerPage = 10;
 
-    // Check Authentication on Page Load
     window.addEventListener('DOMContentLoaded', () => {
       const stored = localStorage.getItem('pandayan_user') || sessionStorage.getItem('pandayan_user');
-      if (!stored) {
-        window.location.href = 'index.html';
-        return;
-      }
+      if (!stored) { window.location.href = 'index.html'; return; }
       currentUser = JSON.parse(stored);
-      document.getElementById('userInfoDisplay').innerText = `Welcome, ${currentUser.kapwaName} (${currentUser.role})`;
+      
+      document.getElementById('sidebarUserName').innerText = currentUser.kapwaName;
+      document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
       fetchDDLData();
       loadDashboardData();
@@ -333,7 +325,6 @@
       window.location.href = 'index.html';
     }
 
-    // Fetch Dropdown List (DDL)
     async function fetchDDLData() {
       try {
         const response = await fetch(API_URL, {
@@ -347,7 +338,7 @@
           ddlKawans = res.kawans;
           populateDropdowns();
         }
-      } catch (e) { console.error("Error fetching DDL:", e); }
+      } catch (e) { console.error(e); }
     }
 
     function populateDropdowns() {
@@ -360,37 +351,29 @@
         pasabay.innerHTML += `<option value="${b}">${b}</option>`;
       });
 
-      if (currentUser.access && currentUser.role === 'Viewer') {
-        reqFrom.value = currentUser.access;
-      }
+      if (currentUser.access && currentUser.role === 'Viewer') reqFrom.value = currentUser.access;
     }
 
-    // Fetch Dashboard Data
     async function loadDashboardData() {
       const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px;"><div class="spinner"></div> Kinukuha ang mga requests...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px;">Kinukuha ang mga requests...</td></tr>';
 
       try {
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'getDashboard',
-            payload: { role: currentUser.role, access: currentUser.access }
-          })
+          body: JSON.stringify({ action: 'getDashboard', payload: { role: currentUser.role, access: currentUser.access } })
         });
-
         const res = await response.json();
         if (res.success) {
           allRequests = res.requests;
           renderTable();
         }
       } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; color:red; padding:20px;">Nagkaroon ng error sa pagkuha ng data.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Nagkaroon ng error sa pagkuha ng data.</td></tr>';
       }
     }
 
-    // Filter by Tab and Paginate
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
@@ -410,7 +393,7 @@
       const paginated = filtered.slice(start, start + recordsPerPage);
 
       if (paginated.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px;">Walang nahanap na record.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px;">Walang nahanap na record.</td></tr>';
         document.getElementById('pageInfo').innerText = `Page 0 of 0`;
         return;
       }
@@ -418,6 +401,7 @@
       paginated.forEach((req, idx) => {
         tbody.innerHTML += `
           <tr>
+            <td><input type="checkbox" class="row-checkbox" value="${req.requestId}" onclick="updateBulkButton()"></td>
             <td>${start + idx + 1}</td>
             <td>${req.timestamp}</td>
             <td><b>${req.requestId}</b></td>
@@ -428,14 +412,18 @@
             <td><span class="badge badge-${req.hatidSundoStatus.toLowerCase()}">${req.hatidSundoStatus}</span></td>
             <td><span class="badge badge-${req.kawanStatus.toLowerCase()}">${req.kawanStatus}</span></td>
             <td>
-              <button class="btn-action" onclick="viewDetails('${req.requestId}')">View</button>
-              ${(req.kawanStatus === 'APPROVED' && !req.ssuDate) ? `<button class="btn-action" style="background-color:var(--status-ssu); margin-left:4px;" onclick="openSSUModal('${req.requestId}')">SSU</button>` : ''}
+              ${req.pdfUrl ? `<a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download</a>` : '-'}
+            </td>
+            <td>
+              <button class="btn-page" style="background:#0d6efd; color:white; border:none;" onclick="viewDetails('${req.requestId}')">View</button>
+              ${(req.kawanStatus === 'APPROVED' && !req.ssuDate) ? `<button class="btn-page" style="background:#0d6efd; color:white; border:none; margin-left:4px;" onclick="openSSUModal('${req.requestId}')">SSU</button>` : ''}
             </td>
           </tr>
         `;
       });
 
       document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
+      updateBulkButton();
     }
 
     function switchTab(tab, btn) {
@@ -449,14 +437,128 @@
     function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
     function nextPage() { currentPage++; renderTable(); }
 
-    // Dynamic Multi-Kawan Row
+    function toggleSelectAll(master) {
+      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = master.checked);
+      updateBulkButton();
+    }
+
+    function updateBulkButton() {
+      const selected = document.querySelectorAll('.row-checkbox:checked').length;
+      const btn = document.getElementById('btnBulkApprove');
+      document.getElementById('selectCount').innerText = selected;
+      btn.style.display = (selected > 0 && currentUser.role !== 'Viewer') ? 'inline-flex' : 'none';
+    }
+
+    async function bulkApprove() {
+      const selected = Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => cb.value);
+      if (selected.length === 0) return;
+
+      let remarks = prompt(`Ilagay ang Remarks para sa Bulk Approval ng ${selected.length} request(s):`);
+      if (remarks === null) return;
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'processApproval',
+            payload: { requestIds: selected, role: currentUser.role, approverName: currentUser.kapwaName, status: 'APPROVED', remarks: remarks }
+          })
+        });
+        const res = await response.json();
+        alert(res.message);
+        loadDashboardData();
+      } catch (e) { alert('Error sa bulk approval.'); }
+    }
+
+    function viewDetails(reqId) {
+      const req = allRequests.find(r => r.requestId === reqId);
+      if (!req) return;
+
+      document.getElementById('viewModalTitle').innerText = `Request Details: ${req.requestId}`;
+
+      let html = `
+        <table class="view-table">
+          <tr><th>Request ID</th><td><b>${req.requestId}</b></td></tr>
+          <tr><th>Date Filed</th><td>${req.timestamp}</td></tr>
+          <tr><th>Requested By / From</th><td>${req.requestedBy} (${req.requestFrom})</td></tr>
+          <tr><th>Requested To</th><td>${req.requestedTo}</td></tr>
+          <tr><th>Liham For</th><td>${req.lihamFor} ${req.modeRemarks ? '(' + req.modeRemarks + ')' : ''}</td></tr>
+          <tr><th>P.O. Number</th><td>${req.poNumber}</td></tr>
+          <tr><th>Reason / KPP</th><td>${req.reason} - ${req.kpp}</td></tr>
+        </table>
+
+        <h4 style="color:var(--burgundy); margin: 15px 0 8px 0;">Approval Remarks & History</h4>
+        <table class="view-table">
+          <tr>
+            <th>GE</th>
+            <td><b>${req.geStatus}</b> | ${req.geApprover || 'N/A'} <br><small>${req.geRemarks ? 'Remarks: ' + req.geRemarks : ''}</small></td>
+          </tr>
+          <tr>
+            <th>Hatid-Sundo</th>
+            <td><b>${req.hatidSundoStatus}</b> | ${req.hatidSundoApprover || 'N/A'} <br><small>${req.hatidSundoRemarks ? 'Remarks: ' + req.hatidSundoRemarks : ''}</small></td>
+          </tr>
+          <tr>
+            <th>Kawan/Tilap</th>
+            <td><b>${req.kawanStatus}</b> | ${req.kawanApprover || 'N/A'} <br><small>${req.kawanRemarks ? 'Remarks: ' + req.kawanRemarks : ''}</small></td>
+          </tr>
+        </table>
+
+        <h4 style="color:var(--burgundy); margin: 15px 0 8px 0;">Attachments</h4>
+        <div>
+          ${req.posReceipt ? `<p><b>POS Receipt:</b> <a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></p>` : ''}
+          ${req.rpoAttachment ? `<p><b>RPO (SSU) Attachment:</b> <a href="${req.rpoAttachment}" target="_blank">Tingnan ang RPO</a></p>` : ''}
+          ${req.pdfUrl ? `<p><b>Liham Pahintulot PDF:</b> <a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>` : ''}
+        </div>
+      `;
+
+      document.getElementById('viewModalBody').innerHTML = html;
+
+      let footerHtml = '<button type="button" class="btn-page" onclick="closeModal(\'viewModal\')">Isara</button>';
+      if (
+        (currentUser.role === '1st Approver' && req.geStatus === 'PENDING') ||
+        (currentUser.role === '2nd Approver' && req.hatidSundoStatus === 'PENDING') ||
+        ((currentUser.role === '3rd Approver' || currentUser.role === 'Admin') && req.kawanStatus === 'PENDING')
+      ) {
+        footerHtml = `
+          <button class="btn-primary" style="background:var(--status-approved);" onclick="processApproval('${req.requestId}', 'APPROVED')">I-APPROVE</button>
+          <button class="btn-primary" style="background:var(--status-disapproved);" onclick="processApproval('${req.requestId}', 'DISAPPROVED')">DISAPPROVE</button>
+        ` + footerHtml;
+      }
+
+      document.getElementById('viewModalFooter').innerHTML = footerHtml;
+      openModal('viewModal');
+    }
+
+    async function processApproval(reqId, status) {
+      let remarks = prompt(`Ilagay ang Remarks para sa ${status}:`);
+      if (remarks === null) return;
+
+      if (status === 'APPROVED' && currentUser.role === '3rd Approver') {
+        alert('Ginagawa na ang Liham Pahintulot PDF. Mangyaring maghintay nang ilang sandali...');
+      }
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'processApproval',
+            payload: { requestIds: [reqId], role: currentUser.role, approverName: currentUser.kapwaName, status: status, remarks: remarks }
+          })
+        });
+        const res = await response.json();
+        alert(res.message);
+        closeModal('viewModal');
+        loadDashboardData();
+      } catch (err) { alert('Error sa pagproseso ng approval.'); }
+    }
+
     function addKawanRow() {
       const container = document.getElementById('kawanContainer');
       const div = document.createElement('div');
       div.className = 'kawan-row';
-
       let options = ddlKawans.map(k => `<option value="${k}">${k}</option>`).join('');
-
       div.innerHTML = `
         <select class="form-control kawan-select" required>${options}</select>
         <input type="text" class="form-control po-input" placeholder="P.O. Number" required>
@@ -465,7 +567,6 @@
       container.appendChild(div);
     }
 
-    // Modal Control Helper
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -477,7 +578,6 @@
       openModal('requestModal');
     }
 
-    // Dynamic Form Logic
     function handleLihamForChange() {
       const val = document.getElementById('lihamFor').value;
       document.getElementById('modePasabayGroup').classList.toggle('hidden', val !== 'Pasabay To');
@@ -497,7 +597,6 @@
       document.getElementById('otherReasonGroup').classList.toggle('hidden', val !== 'Others');
     }
 
-    // Image Compression Helper
     function compressImage(file) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -511,7 +610,6 @@
             const scaleSize = maxWidth / img.width;
             canvas.width = (img.width > maxWidth) ? maxWidth : img.width;
             canvas.height = (img.width > maxWidth) ? img.height * scaleSize : img.height;
-
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             resolve(canvas.toDataURL('image/jpeg', 0.7));
@@ -520,25 +618,19 @@
       });
     }
 
-    // Request Form Submission
     document.getElementById('requestForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btnSubmitRequest');
       btn.disabled = true;
-      btn.innerHTML = '<span class="spinner"></span> Isinusumite...';
+      btn.innerHTML = 'Isinusumite...';
 
       let posReceiptFile = '';
       const fileInput = document.getElementById('posReceiptFile');
-      if (fileInput.files.length > 0) {
-        posReceiptFile = await compressImage(fileInput.files[0]);
-      }
+      if (fileInput.files.length > 0) posReceiptFile = await compressImage(fileInput.files[0]);
 
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
-        kawanList.push({
-          kawan: row.querySelector('.kawan-select').value,
-          poNumber: row.querySelector('.po-input').value
-        });
+        kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
       });
 
       const modeVal = document.getElementById('lihamFor').value;
@@ -572,83 +664,10 @@
         alert(res.message);
         closeModal('requestModal');
         loadDashboardData();
-      } catch (err) { alert('Nagkaroon ng error sa submission.'); }
+      } catch (err) { alert('Error sa submission.'); }
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT REQUEST'; }
     });
 
-    // View & Approve Modal Logic
-    function viewDetails(reqId) {
-      const req = allRequests.find(r => r.requestId === reqId);
-      if (!req) return;
-
-      document.getElementById('viewModalTitle').innerText = `Request Details: ${req.requestId}`;
-      
-      let html = `
-        <table style="width:100%; border-collapse:collapse;">
-          <tr><th>Request ID:</th><td><b>${req.requestId}</b></td></tr>
-          <tr><th>Date:</th><td>${req.timestamp}</td></tr>
-          <tr><th>Requested By / From:</th><td>${req.requestedBy} (${req.requestFrom})</td></tr>
-          <tr><th>Requested To:</th><td>${req.requestedTo}</td></tr>
-          <tr><th>Liham For:</th><td>${req.lihamFor} ${req.modeRemarks ? '(' + req.modeRemarks + ')' : ''}</td></tr>
-          <tr><th>P.O. Number:</th><td>${req.poNumber}</td></tr>
-          <tr><th>Reason / KPP:</th><td>${req.reason} - ${req.kpp}</td></tr>
-          ${req.posReceipt ? `<tr><th>POS Receipt:</th><td><a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></td></tr>` : ''}
-          ${req.pdfUrl ? `<tr><th>Liham PDF:</th><td><a href="${req.pdfUrl}" target="_blank" style="color:red; font-weight:bold;"><i class="fa-solid fa-file-pdf"></i> I-download ang PDF</a></td></tr>` : ''}
-        </table>
-      `;
-
-      document.getElementById('viewModalBody').innerHTML = html;
-
-      let footerHtml = '<button type="button" class="btn-page" onclick="closeModal(\'viewModal\')">Isara</button>';
-      
-      // Approver Buttons
-      if (
-        (currentUser.role === '1st Approver' && req.geStatus === 'PENDING') ||
-        (currentUser.role === '2nd Approver' && req.hatidSundoStatus === 'PENDING') ||
-        ((currentUser.role === '3rd Approver' || currentUser.role === 'Admin') && req.kawanStatus === 'PENDING')
-      ) {
-        footerHtml = `
-          <button class="btn-primary" style="background:var(--status-approved);" onclick="processApproval('${req.requestId}', 'APPROVED')">I-APPROVE</button>
-          <button class="btn-primary" style="background:var(--status-disapproved);" onclick="processApproval('${req.requestId}', 'DISAPPROVED')">DISAPPROVE</button>
-        ` + footerHtml;
-      }
-
-      document.getElementById('viewModalFooter').innerHTML = footerHtml;
-      openModal('viewModal');
-    }
-
-    // Process Approval Workflow
-    async function processApproval(reqId, status) {
-      let remarks = prompt(`Ilagay ang Remarks para sa ${status}:`);
-      if (remarks === null) return;
-
-      if (status === 'APPROVED' && currentUser.role === '3rd Approver') {
-        alert('Ginagawa na ang Liham Pahintulot PDF. Mangyaring maghintay nang ilang sandali...');
-      }
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            action: 'processApproval',
-            payload: {
-              requestIds: [reqId],
-              role: currentUser.role,
-              approverName: currentUser.kapwaName,
-              status: status,
-              remarks: remarks
-            }
-          })
-        });
-        const res = await response.json();
-        alert(res.message);
-        closeModal('viewModal');
-        loadDashboardData();
-      } catch (err) { alert('Nagkaroon ng error sa pagproseso ng approval.'); }
-    }
-
-    // SSU Modal Filing
     function openSSUModal(reqId) {
       document.getElementById('ssuForm').reset();
       document.getElementById('ssuRequestId').value = reqId;
@@ -659,13 +678,11 @@
       e.preventDefault();
       const btn = document.getElementById('btnSubmitSSU');
       btn.disabled = true;
-      btn.innerHTML = '<span class="spinner"></span> Isinusumite...';
+      btn.innerHTML = 'Isinusumite...';
 
       const fileInput = document.getElementById('rpoFile');
       let rpoFile = '';
-      if (fileInput.files.length > 0) {
-        rpoFile = await compressImage(fileInput.files[0]);
-      }
+      if (fileInput.files.length > 0) rpoFile = await compressImage(fileInput.files[0]);
 
       const payload = {
         requestId: document.getElementById('ssuRequestId').value,
@@ -684,17 +701,15 @@
         alert(res.message);
         closeModal('ssuModal');
         loadDashboardData();
-      } catch (err) { alert('Nagkaroon ng error sa pag-SSU.'); }
+      } catch (err) { alert('Error sa pag-SSU.'); }
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT SSU'; }
     });
 
-    // Real-Time Table Filter / Search
     function filterTable() {
       const term = document.getElementById('searchInput').value.toLowerCase();
       const rows = document.querySelectorAll('#tableBody tr');
       rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        row.style.display = text.includes(term) ? '' : 'none';
+        row.style.display = row.innerText.toLowerCase().includes(term) ? '' : 'none';
       });
     }
   </script>
