@@ -239,7 +239,7 @@
             </tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="12" style="text-align:center; padding: 20px;">Kinukuha ang data mula sa system...</td></tr>
+            <tr><td colspan="12" style="text-align:center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Kumukuha ng mga data mula sa system...</td></tr>
           </tbody>
         </table>
 
@@ -420,7 +420,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbw-8zpILjurBfuHwrk9rsZACetLjTKYocc3H7Vw0IiZzZdUEZigE1jO2kRCDF2RGvNl/exec";
 
     let currentUser = null;
     let allRequests = [];
@@ -430,7 +430,7 @@
     let currentPage = 1;
     const recordsPerPage = 10;
 
-    window.addEventListener('DOMContentLoaded', async () => {
+    window.addEventListener('DOMContentLoaded', () => {
       const stored = localStorage.getItem('pandayan_user') || sessionStorage.getItem('pandayan_user');
       if (!stored) { window.location.href = 'index.html'; return; }
       currentUser = JSON.parse(stored);
@@ -439,11 +439,13 @@
       document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
       startLiveClock();
-      
-      // Sequential Initialization to prevent race conditions
+      initializeApp();
+    });
+
+    async function initializeApp() {
       await fetchDDLData();
       await loadDashboardData();
-    });
+    }
 
     function startLiveClock() {
       setInterval(() => {
@@ -493,9 +495,11 @@
       if (currentUser.access && currentUser.role === 'Viewer') reqFrom.value = currentUser.access;
     }
 
-    async function loadDashboardData() {
+    async function loadDashboardData(retryCount = 0) {
       const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px;">Kinukuha ang mga requests...</td></tr>';
+      if (retryCount === 0) {
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:20px;"><i class="fa-solid fa-spinner fa-spin"></i> Kumukuha ng mga data mula sa system...</td></tr>';
+      }
 
       try {
         const response = await fetch(API_URL, {
@@ -507,7 +511,6 @@
         if (res.success) {
           allRequests = res.requests || [];
           
-          // Update Analytics Cards
           document.getElementById('countPending').innerText = res.summary ? res.summary.pending : 0;
           document.getElementById('countApproved').innerText = res.summary ? res.summary.approved : 0;
           document.getElementById('countDisapproved').innerText = res.summary ? res.summary.disapproved : 0;
@@ -519,7 +522,11 @@
         }
       } catch (e) {
         console.error("Dashboard fetch error:", e);
-        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Nagkaroon ng error sa pagkuha ng data. Mangyaring i-refresh ang page.</td></tr>';
+        if (retryCount < 2) {
+          setTimeout(() => loadDashboardData(retryCount + 1), 1500);
+        } else {
+          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Kumukonekta pa sa system. Mangyaring i-refresh ang page kung hindi kusa lumabas.</td></tr>';
+        }
       }
     }
 
@@ -528,7 +535,6 @@
       const dTo = document.getElementById('dateTo').value;
 
       return allRequests.filter(req => {
-        // Status Filter
         let matchesStatus = false;
         if (currentTab === 'PENDING') matchesStatus = req.geStatus === 'PENDING' || req.hatidSundoStatus === 'PENDING' || req.kawanStatus === 'PENDING';
         if (currentTab === 'APPROVED') matchesStatus = req.kawanStatus === 'APPROVED' && !req.ssuDate;
@@ -537,7 +543,6 @@
 
         if (!matchesStatus) return false;
 
-        // Date Range Filter
         if (dFrom && req.timestamp.slice(0, 10) < dFrom) return false;
         if (dTo && req.timestamp.slice(0, 10) > dTo) return false;
 
@@ -733,7 +738,7 @@
       let remarks = prompt(`Ilagay ang Remarks para sa ${status}:`);
       if (remarks === null) return;
 
-      if (status === 'APPROVED' && currentUser.role === '3rd Approver') {
+      if (status === 'APPROVED' && (currentUser.role === '3rd Approver' || currentUser.role === 'Admin')) {
         alert('Ginagawa na ang Liham Pahintulot PDF. Mangyaring maghintay nang ilang sandali...');
       }
 
@@ -904,7 +909,6 @@
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT SSU'; }
     });
 
-    // HELP DESK / SUGGESTION FORM SUBMISSION
     document.getElementById('helpDeskForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btnSubmitHelp');
