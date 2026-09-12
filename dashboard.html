@@ -16,107 +16,186 @@
       --status-pending: #ffc107;
       --status-approved: #28a745;
       --status-disapproved: #dc3545;
+      --status-ssu: #0d6efd;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--gray-bg); display: flex; min-height: 100vh; }
+    body { background-color: var(--gray-bg); display: flex; min-height: 100vh; flex-direction: row; }
 
-    /* Redesigned Enhanced Sidebar */
-    .sidebar { width: 260px; background: linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-dark) 100%); color: var(--white); display: flex; flex-direction: column; box-shadow: 4px 0 10px rgba(0,0,0,0.15); }
-    .sidebar-brand { padding: 25px 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
-    .sidebar-brand h2 { color: var(--yellow); font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+    /* Responsive Setup */
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100% !important; min-height: auto !important; }
+      .action-bar { flex-direction: column; align-items: stretch !important; }
+      .search-group { flex-direction: column; width: 100%; }
+      .search-input, .date-filter { width: 100% !important; }
+      .analytics-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+
+    /* Sidebar Styling */
+    .sidebar { width: 260px; background: linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-dark) 100%); color: var(--white); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 4px 0 10px rgba(0,0,0,0.15); z-index: 10; }
+    .sidebar-brand { padding: 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
+    .sidebar-brand h2 { color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
     .sidebar-brand p { font-size: 11px; color: var(--white); margin-top: 4px; opacity: 0.9; }
 
-    .user-profile-card { margin: 20px 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center; border: 1px solid rgba(255,215,0,0.3); }
-    .user-profile-card i { font-size: 35px; color: var(--yellow); margin-bottom: 8px; }
-    .user-profile-card .name { font-weight: 700; font-size: 14px; color: var(--white); }
-    .user-profile-card .role { font-size: 11px; color: var(--yellow); font-weight: 600; text-transform: uppercase; }
+    .user-profile-card { margin: 15px; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center; border: 1px solid rgba(255,215,0,0.3); }
+    .user-profile-card i { font-size: 30px; color: var(--yellow); margin-bottom: 5px; }
+    .user-profile-card .name { font-weight: 700; font-size: 13px; color: var(--white); }
+    .user-profile-card .role { font-size: 10px; color: var(--yellow); font-weight: 600; text-transform: uppercase; }
 
     .sidebar-menu { list-style: none; padding: 10px 0; }
-    .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 25px; color: var(--white); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+    .sidebar-menu li a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; color: var(--white); text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; cursor: pointer; }
     .sidebar-menu li.active a, .sidebar-menu li a:hover { background-color: var(--yellow); color: var(--burgundy); font-weight: 700; }
 
-    .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
-    .top-header { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .btn-logout { background-color: var(--burgundy); color: var(--white); border: none; padding: 8px 16px; border-radius: 5px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 12px; }
+    .sidebar-footer { padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .btn-manual { display: block; width: 100%; text-align: center; background-color: var(--yellow); color: var(--burgundy); padding: 10px; border-radius: 6px; font-weight: 800; font-size: 12px; text-decoration: none; transition: 0.3s; }
+    .btn-manual:hover { background-color: #e6c200; }
 
-    .content-body { padding: 25px 30px; }
-    .tabs-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-    .tab-btn { padding: 10px 18px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    /* Main Content Styling */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
+    .top-header { background-color: var(--white); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .clock-display { font-size: 13px; font-weight: 700; color: var(--burgundy); display: flex; align-items: center; gap: 8px; }
+    .btn-logout { background-color: var(--burgundy); color: var(--white); border: none; padding: 7px 14px; border-radius: 5px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 11px; }
+
+    .content-body { padding: 20px; }
+
+    /* Analytics Cards */
+    .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+    .card-analytic { background: var(--white); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid var(--burgundy); display: flex; justify-content: space-between; align-items: center; }
+    .card-analytic .num { font-size: 22px; font-weight: 800; color: var(--burgundy); }
+    .card-analytic .label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
+
+    /* Tabs & Actions */
+    .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+    .tab-btn { padding: 8px 14px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .tab-btn.active { background-color: var(--burgundy); color: var(--white); border-color: var(--burgundy); }
 
     .action-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
-    .btn-primary { background-color: var(--burgundy); color: var(--white); border: none; padding: 10px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-    .btn-bulk { background-color: var(--status-approved); color: var(--white); border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer; display: none; }
-    .search-input { padding: 8px 15px; border: 1px solid #ccc; border-radius: 6px; width: 280px; font-size: 13px; }
+    .btn-primary { background-color: var(--burgundy); color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .btn-csv { background-color: #198754; color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .btn-bulk { background-color: var(--status-approved); color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: none; font-size: 12px; }
 
+    .search-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 200px; font-size: 12px; }
+    .date-filter { padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
+
+    /* Table Styling */
     .table-card { background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { background-color: var(--burgundy); color: var(--white); padding: 12px 15px; font-weight: 700; white-space: nowrap; }
-    td { padding: 12px 15px; border-bottom: 1px solid #eee; white-space: nowrap; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
+    th { background-color: var(--burgundy); color: var(--white); padding: 10px 12px; font-weight: 700; white-space: nowrap; }
+    td { padding: 10px 12px; border-bottom: 1px solid #eee; white-space: nowrap; }
     
-    .badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; color: var(--white); }
+    .clickable-row { cursor: pointer; transition: background 0.2s; }
+    .clickable-row:hover { background-color: #f1f3f5 !important; }
+
+    .badge { padding: 4px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; color: var(--white); }
     .badge-pending { background-color: var(--status-pending); color: #000; }
     .badge-approved { background-color: var(--status-approved); }
     .badge-disapproved { background-color: var(--status-disapproved); }
 
-    .pdf-link { color: #dc3545; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-    .pdf-link:hover { text-decoration: underline; }
+    .pdf-link { color: #dc3545; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
 
-    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-top: 1px solid #eee; }
-    .btn-page { padding: 6px 12px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #eee; }
+    .btn-page { padding: 5px 10px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
 
-    /* Modal Styling */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    /* Modals */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
     .modal.active { display: flex; }
     .modal-content { background: var(--white); border-radius: 8px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--burgundy); }
-    .modal-header { background: var(--burgundy); color: var(--white); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .modal-header h3 { font-size: 16px; color: var(--yellow); }
+    .modal-header { background: var(--burgundy); color: var(--white); padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-size: 15px; color: var(--yellow); }
     .modal-close { color: var(--white); font-size: 20px; cursor: pointer; }
-    .modal-body { padding: 20px; }
-    .modal-footer { padding: 15px 20px; background: #f9f9f9; text-align: right; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px; }
+    .modal-body { padding: 18px; }
+    .modal-footer { padding: 12px 18px; background: #f9f9f9; text-align: right; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 8px; }
 
-    .view-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-    .view-table th { background-color: #800000; color: white; width: 30%; padding: 8px; text-align: left; }
-    .view-table td { border: 1px solid #ddd; padding: 8px; }
+    .view-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    .view-table th { background-color: var(--burgundy); color: white; width: 28%; padding: 8px; text-align: left; font-size: 11px; }
+    .view-table td { border: 1px solid #ddd; padding: 8px; font-size: 12px; }
     
-    .kawan-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-    .btn-add-kawan { background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 5px; }
-    .btn-remove-kawan { background: var(--status-disapproved); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+    .kpp-box { background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 5px; white-space: pre-wrap; word-break: break-word; font-size: 12px; line-height: 1.4; color: #333; }
 
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; }
-    .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 13px; }
+    .kawan-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .btn-add-kawan { background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    .btn-remove-kawan { background: var(--status-disapproved); color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; }
+    .form-control { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 12px; }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
-  <!-- Enhanced Sidebar -->
+  <!-- Sidebar -->
   <div class="sidebar">
-    <div class="sidebar-brand">
-      <h2>PANDAYAN</h2>
-      <p>Liham Pahintulot Portal</p>
+    <div>
+      <div class="sidebar-brand">
+        <h2>PANDAYAN</h2>
+        <p>Liham Pahintulot Portal</p>
+      </div>
+
+      <div class="user-profile-card">
+        <i class="fa-solid fa-circle-user"></i>
+        <div class="name" id="sidebarUserName">Kapwa User</div>
+        <div class="role" id="sidebarUserRole">Viewer</div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="active"><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+        <li><a onclick="openModal('helpDeskModal')"><i class="fa-solid fa-headset"></i> Help Desk / Suggestion</a></li>
+      </ul>
     </div>
 
-    <div class="user-profile-card">
-      <i class="fa-solid fa-circle-user"></i>
-      <div class="name" id="sidebarUserName">Kapwa User</div>
-      <div class="role" id="sidebarUserRole">Viewer</div>
+    <div class="sidebar-footer">
+      <a href="https://canva.link/iutj7y57y7n39xe" target="_blank" class="btn-manual">
+        <i class="fa-solid fa-circle-question"></i> Paano gamitin ang App? (User Manual)
+      </a>
     </div>
-
-    <ul class="sidebar-menu">
-      <li class="active"><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-    </ul>
   </div>
 
+  <!-- Main Content -->
   <div class="main-content">
     <div class="top-header">
-      <h3 style="color: var(--burgundy);">Liham Pahintulot Online Dashboard</h3>
+      <div class="clock-display">
+        <i class="fa-solid fa-clock"></i> <span id="liveClock">Loading Clock...</span>
+      </div>
       <button class="btn-logout" onclick="logoutUser()">Log Out</button>
     </div>
 
     <div class="content-body">
+      <!-- Summary Analytics Cards -->
+      <div class="analytics-grid">
+        <div class="card-analytic" style="border-left-color: var(--status-pending);">
+          <div>
+            <div class="label">Pending</div>
+            <div class="num" id="countPending">0</div>
+          </div>
+          <i class="fa-solid fa-hourglass-half fa-2x" style="color: var(--status-pending);"></i>
+        </div>
+        <div class="card-analytic" style="border-left-color: var(--status-approved);">
+          <div>
+            <div class="label">Approved</div>
+            <div class="num" id="countApproved">0</div>
+          </div>
+          <i class="fa-solid fa-circle-check fa-2x" style="color: var(--status-approved);"></i>
+        </div>
+        <div class="card-analytic" style="border-left-color: var(--status-disapproved);">
+          <div>
+            <div class="label">Disapproved</div>
+            <div class="num" id="countDisapproved">0</div>
+          </div>
+          <i class="fa-solid fa-circle-xmark fa-2x" style="color: var(--status-disapproved);"></i>
+        </div>
+        <div class="card-analytic" style="border-left-color: var(--status-ssu);">
+          <div>
+            <div class="label">SSU Completed</div>
+            <div class="num" id="countSSU">0</div>
+          </div>
+          <i class="fa-solid fa-box-archive fa-2x" style="color: var(--status-ssu);"></i>
+        </div>
+      </div>
+
+      <!-- Dashboard Tabs -->
       <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('PENDING', this)"><i class="fa-solid fa-clock"></i> Pending Request</button>
         <button class="tab-btn" onclick="switchTab('APPROVED', this)"><i class="fa-solid fa-circle-check"></i> Approved Request</button>
@@ -124,14 +203,23 @@
         <button class="tab-btn" onclick="switchTab('SSU', this)"><i class="fa-solid fa-box-archive"></i> SSU Request</button>
       </div>
 
+      <!-- Action Bar -->
       <div class="action-bar">
-        <div style="display:flex; gap:10px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
           <button class="btn-primary" onclick="openRequestModal()"><i class="fa-solid fa-plus"></i> REQUEST FORM</button>
+          <button class="btn-csv" onclick="exportToCSV()"><i class="fa-solid fa-file-csv"></i> EXPORT CSV</button>
           <button class="btn-bulk" id="btnBulkApprove" onclick="bulkApprove()"><i class="fa-solid fa-check-double"></i> Bulk Approve (<span id="selectCount">0</span>)</button>
         </div>
-        <input type="text" id="searchInput" class="search-input" placeholder="Mag-search ng Request ID, Branch..." onkeyup="filterTable()">
+
+        <div class="search-group">
+          <input type="date" id="dateFrom" class="date-filter" onchange="renderTable()">
+          <span style="font-size:11px; font-weight:bold;">to</span>
+          <input type="date" id="dateTo" class="date-filter" onchange="renderTable()">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search Request ID, Branch..." onkeyup="filterTable()">
+        </div>
       </div>
 
+      <!-- Table Card -->
       <div class="table-card">
         <table>
           <thead>
@@ -156,7 +244,7 @@
         </table>
 
         <div class="pagination">
-          <span id="pageInfo" style="font-size: 12px; font-weight: 600;">Page 1 of 1</span>
+          <span id="pageInfo" style="font-size: 11px; font-weight: 600;">Page 1 of 1</span>
           <div>
             <button class="btn-page" onclick="prevPage()">Previous</button>
             <button class="btn-page" onclick="nextPage()">Next</button>
@@ -253,7 +341,7 @@
     </div>
   </div>
 
-  <!-- VIEW / TRANSPARENT APPROVAL MODAL -->
+  <!-- VIEW / DETAILED APPROVAL MODAL -->
   <div class="modal" id="viewModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -296,8 +384,43 @@
     </div>
   </div>
 
+  <!-- HELP DESK & SUGGESTION MODAL -->
+  <div class="modal" id="helpDeskModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Help Desk & Suggestion Portal</h3>
+        <span class="modal-close" onclick="closeModal('helpDeskModal')">&times;</span>
+      </div>
+      <form id="helpDeskForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Kategorya (Category)</label>
+            <select class="form-control" id="helpCategory" required>
+              <option value="Support Request / Tulong">Support Request / Tulong</option>
+              <option value="Suggestion / Mungkahi">Suggestion / Mungkahi</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Paksa / Subject</label>
+            <input type="text" class="form-control" id="helpSubject" placeholder="Maikling pamagat ng usapin..." required>
+          </div>
+
+          <div class="form-group">
+            <label>Detaye ng Tulong o Mungkahi</label>
+            <textarea class="form-control" id="helpDetails" rows="4" placeholder="Isulat nang buo ang detalye ng iyong concern o suggestion..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-page" onclick="closeModal('helpDeskModal')">Kanselahin</button>
+          <button type="submit" class="btn-primary" id="btnSubmitHelp">I-SUBMIT FEEDBACK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw-8zpILjurBfuHwrk9rsZACetLjTKYocc3H7Vw0IiZzZdUEZigE1jO2kRCDF2RGvNl/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
 
     let currentUser = null;
     let allRequests = [];
@@ -315,9 +438,21 @@
       document.getElementById('sidebarUserName').innerText = currentUser.kapwaName;
       document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
+      startLiveClock();
       fetchDDLData();
       loadDashboardData();
     });
+
+    function startLiveClock() {
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById('liveClock').innerText = now.toLocaleString('en-US', {
+          timeZone: 'Asia/Manila',
+          dateStyle: 'medium',
+          timeStyle: 'medium'
+        }) + " (PHT)";
+      }, 1000);
+    }
 
     function logoutUser() {
       localStorage.removeItem('pandayan_user');
@@ -367,6 +502,13 @@
         const res = await response.json();
         if (res.success) {
           allRequests = res.requests;
+          
+          // Update Analytics Cards
+          document.getElementById('countPending').innerText = res.summary.pending;
+          document.getElementById('countApproved').innerText = res.summary.approved;
+          document.getElementById('countDisapproved').innerText = res.summary.disapproved;
+          document.getElementById('countSSU').innerText = res.summary.ssu;
+
           renderTable();
         }
       } catch (e) {
@@ -374,18 +516,33 @@
       }
     }
 
+    function getFilteredRequests() {
+      const dFrom = document.getElementById('dateFrom').value;
+      const dTo = document.getElementById('dateTo').value;
+
+      return allRequests.filter(req => {
+        // Status Filter
+        let matchesStatus = false;
+        if (currentTab === 'PENDING') matchesStatus = req.geStatus === 'PENDING' || req.hatidSundoStatus === 'PENDING' || req.kawanStatus === 'PENDING';
+        if (currentTab === 'APPROVED') matchesStatus = req.kawanStatus === 'APPROVED' && !req.ssuDate;
+        if (currentTab === 'DISAPPROVED') matchesStatus = req.geStatus === 'DISAPPROVED' || req.hatidSundoStatus === 'DISAPPROVED' || req.kawanStatus === 'DISAPPROVED';
+        if (currentTab === 'SSU') matchesStatus = req.ssuDate !== '';
+
+        if (!matchesStatus) return false;
+
+        // Date Range Filter
+        if (dFrom && req.timestamp.slice(0, 10) < dFrom) return false;
+        if (dTo && req.timestamp.slice(0, 10) > dTo) return false;
+
+        return true;
+      });
+    }
+
     function renderTable() {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
 
-      let filtered = allRequests.filter(req => {
-        if (currentTab === 'PENDING') return req.geStatus === 'PENDING' || req.hatidSundoStatus === 'PENDING' || req.kawanStatus === 'PENDING';
-        if (currentTab === 'APPROVED') return req.kawanStatus === 'APPROVED' && !req.ssuDate;
-        if (currentTab === 'DISAPPROVED') return req.geStatus === 'DISAPPROVED' || req.hatidSundoStatus === 'DISAPPROVED' || req.kawanStatus === 'DISAPPROVED';
-        if (currentTab === 'SSU') return req.ssuDate !== '';
-        return true;
-      });
-
+      let filtered = getFilteredRequests();
       const totalPages = Math.ceil(filtered.length / recordsPerPage) || 1;
       if (currentPage > totalPages) currentPage = totalPages;
 
@@ -400,8 +557,8 @@
 
       paginated.forEach((req, idx) => {
         tbody.innerHTML += `
-          <tr>
-            <td><input type="checkbox" class="row-checkbox" value="${req.requestId}" onclick="updateBulkButton()"></td>
+          <tr class="clickable-row" onclick="handleRowClick(event, '${req.requestId}')">
+            <td onclick="event.stopPropagation()"><input type="checkbox" class="row-checkbox" value="${req.requestId}" onclick="updateBulkButton()"></td>
             <td>${start + idx + 1}</td>
             <td>${req.timestamp}</td>
             <td><b>${req.requestId}</b></td>
@@ -411,10 +568,10 @@
             <td><span class="badge badge-${req.geStatus.toLowerCase()}">${req.geStatus}</span></td>
             <td><span class="badge badge-${req.hatidSundoStatus.toLowerCase()}">${req.hatidSundoStatus}</span></td>
             <td><span class="badge badge-${req.kawanStatus.toLowerCase()}">${req.kawanStatus}</span></td>
-            <td>
+            <td onclick="event.stopPropagation()">
               ${req.pdfUrl ? `<a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download</a>` : '-'}
             </td>
-            <td>
+            <td onclick="event.stopPropagation()">
               <button class="btn-page" style="background:#0d6efd; color:white; border:none;" onclick="viewDetails('${req.requestId}')">View</button>
               ${(req.kawanStatus === 'APPROVED' && !req.ssuDate) ? `<button class="btn-page" style="background:#0d6efd; color:white; border:none; margin-left:4px;" onclick="openSSUModal('${req.requestId}')">SSU</button>` : ''}
             </td>
@@ -424,6 +581,10 @@
 
       document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
       updateBulkButton();
+    }
+
+    function handleRowClick(event, reqId) {
+      viewDetails(reqId);
     }
 
     function switchTab(tab, btn) {
@@ -471,6 +632,26 @@
       } catch (e) { alert('Error sa bulk approval.'); }
     }
 
+    function exportToCSV() {
+      const filtered = getFilteredRequests();
+      if (filtered.length === 0) { alert('Walang data na mai-export.'); return; }
+
+      let csv = 'Request ID,Date Filed,Requested By,Request From,Requested To,Liham For,Mode Remarks,P.O. Number,Reason,KPP,GE Status,GE Remarks,Hatid-Sundo Status,Hatid-Sundo Remarks,Kawan Status,Kawan Remarks,SSU Date,SSU Remarks\n';
+
+      filtered.forEach(r => {
+        csv += `"${r.requestId}","${r.timestamp}","${r.requestedBy}","${r.requestFrom}","${r.requestedTo}","${r.lihamFor}","${r.modeRemarks || ''}","${r.poNumber}","${r.reason}","${(r.kpp || '').replace(/"/g, '""')}","${r.geStatus}","${r.geRemarks || ''}","${r.hatidSundoStatus}","${r.hatidSundoRemarks || ''}","${r.kawanStatus}","${r.kawanRemarks || ''}","${r.ssuDate || ''}","${r.ssuRemarks || ''}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `Liham_Pahintulot_Report_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
     function viewDetails(reqId) {
       const req = allRequests.find(r => r.requestId === reqId);
       if (!req) return;
@@ -485,10 +666,13 @@
           <tr><th>Requested To</th><td>${req.requestedTo}</td></tr>
           <tr><th>Liham For</th><td>${req.lihamFor} ${req.modeRemarks ? '(' + req.modeRemarks + ')' : ''}</td></tr>
           <tr><th>P.O. Number</th><td>${req.poNumber}</td></tr>
-          <tr><th>Reason / KPP</th><td>${req.reason} - ${req.kpp}</td></tr>
+          <tr><th>Reason for Request</th><td><b>${req.reason}</b></td></tr>
         </table>
 
-        <h4 style="color:var(--burgundy); margin: 15px 0 8px 0;">Approval Remarks & History</h4>
+        <h4 style="color:var(--burgundy); margin: 12px 0 6px 0; font-size: 13px;">KPP (Kwento sa Pagkaunawa ng Pangyayari)</h4>
+        <div class="kpp-box">${req.kpp || 'Walang nakalagay na KPP.'}</div>
+
+        <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Approval Remarks & History</h4>
         <table class="view-table">
           <tr>
             <th>GE</th>
@@ -504,11 +688,19 @@
           </tr>
         </table>
 
-        <h4 style="color:var(--burgundy); margin: 15px 0 8px 0;">Attachments</h4>
+        ${req.ssuDate ? `
+          <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">SSU (System Status Update) Details</h4>
+          <table class="view-table">
+            <tr><th>SSU Date</th><td>${req.ssuDate}</td></tr>
+            <tr><th>SSU Remarks</th><td>${req.ssuRemarks || '-'}</td></tr>
+            <tr><th>RPO Attachment</th><td>${req.rpoAttachment ? `<a href="${req.rpoAttachment}" target="_blank">Tingnan ang RPO Attachment Image</a>` : 'Walang Attachment'}</td></tr>
+          </table>
+        ` : ''}
+
+        <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Attachments & Documents</h4>
         <div>
-          ${req.posReceipt ? `<p><b>POS Receipt:</b> <a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></p>` : ''}
-          ${req.rpoAttachment ? `<p><b>RPO (SSU) Attachment:</b> <a href="${req.rpoAttachment}" target="_blank">Tingnan ang RPO</a></p>` : ''}
-          ${req.pdfUrl ? `<p><b>Liham Pahintulot PDF:</b> <a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download PDF</a></p>` : ''}
+          ${req.posReceipt ? `<p style="font-size:12px; margin-bottom:4px;"><b>POS Receipt:</b> <a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></p>` : ''}
+          ${req.pdfUrl ? `<p style="font-size:12px;"><b>Liham Pahintulot PDF:</b> <a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download PDF Document</a></p>` : ''}
         </div>
       `;
 
@@ -703,6 +895,35 @@
         loadDashboardData();
       } catch (err) { alert('Error sa pag-SSU.'); }
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT SSU'; }
+    });
+
+    // HELP DESK / SUGGESTION FORM SUBMISSION
+    document.getElementById('helpDeskForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmitHelp');
+      btn.disabled = true;
+      btn.innerHTML = 'Isinusumite...';
+
+      const payload = {
+        kapwaName: currentUser.kapwaName,
+        branchOrOffice: currentUser.access || 'N/A',
+        category: document.getElementById('helpCategory').value,
+        subject: document.getElementById('helpSubject').value,
+        details: document.getElementById('helpDetails').value
+      };
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'submitSuggestion', payload: payload })
+        });
+        const res = await response.json();
+        alert(res.message);
+        closeModal('helpDeskModal');
+        document.getElementById('helpDeskForm').reset();
+      } catch (err) { alert('Error sa pagpasa ng feedback.'); }
+      finally { btn.disabled = false; btn.innerText = 'I-SUBMIT FEEDBACK'; }
     });
 
     function filterTable() {
