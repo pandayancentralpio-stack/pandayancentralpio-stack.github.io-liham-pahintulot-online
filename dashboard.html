@@ -430,7 +430,7 @@
     let currentPage = 1;
     const recordsPerPage = 10;
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       const stored = localStorage.getItem('pandayan_user') || sessionStorage.getItem('pandayan_user');
       if (!stored) { window.location.href = 'index.html'; return; }
       currentUser = JSON.parse(stored);
@@ -439,8 +439,10 @@
       document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
       startLiveClock();
-      fetchDDLData();
-      loadDashboardData();
+      
+      // Sequential Initialization to prevent race conditions
+      await fetchDDLData();
+      await loadDashboardData();
     });
 
     function startLiveClock() {
@@ -469,16 +471,18 @@
         });
         const res = await response.json();
         if (res.success) {
-          ddlBranches = res.branches;
-          ddlKawans = res.kawans;
+          ddlBranches = res.branches || [];
+          ddlKawans = res.kawans || [];
           populateDropdowns();
         }
-      } catch (e) { console.error(e); }
+      } catch (e) { console.error("Error fetching DDL:", e); }
     }
 
     function populateDropdowns() {
       const reqFrom = document.getElementById('requestFrom');
       const pasabay = document.getElementById('pasabayTargetBranch');
+      if (!reqFrom || !pasabay) return;
+
       reqFrom.innerHTML = ''; pasabay.innerHTML = '';
 
       ddlBranches.forEach(b => {
@@ -501,18 +505,21 @@
         });
         const res = await response.json();
         if (res.success) {
-          allRequests = res.requests;
+          allRequests = res.requests || [];
           
           // Update Analytics Cards
-          document.getElementById('countPending').innerText = res.summary.pending;
-          document.getElementById('countApproved').innerText = res.summary.approved;
-          document.getElementById('countDisapproved').innerText = res.summary.disapproved;
-          document.getElementById('countSSU').innerText = res.summary.ssu;
+          document.getElementById('countPending').innerText = res.summary ? res.summary.pending : 0;
+          document.getElementById('countApproved').innerText = res.summary ? res.summary.approved : 0;
+          document.getElementById('countDisapproved').innerText = res.summary ? res.summary.disapproved : 0;
+          document.getElementById('countSSU').innerText = res.summary ? res.summary.ssu : 0;
 
           renderTable();
+        } else {
+          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">' + (res.message || 'Error sa pagkuha ng data.') + '</td></tr>';
         }
       } catch (e) {
-        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Nagkaroon ng error sa pagkuha ng data.</td></tr>';
+        console.error("Dashboard fetch error:", e);
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Nagkaroon ng error sa pagkuha ng data. Mangyaring i-refresh ang page.</td></tr>';
       }
     }
 
