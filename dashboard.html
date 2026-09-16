@@ -22,6 +22,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: var(--gray-bg); display: flex; min-height: 100vh; flex-direction: row; }
 
+    /* Responsive Setup */
     @media (max-width: 900px) {
       body { flex-direction: column; }
       .sidebar { width: 100% !important; min-height: auto !important; }
@@ -31,6 +32,7 @@
       .analytics-grid { grid-template-columns: repeat(2, 1fr) !important; }
     }
 
+    /* Sidebar Styling */
     .sidebar { width: 260px; background: linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-dark) 100%); color: var(--white); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 4px 0 10px rgba(0,0,0,0.15); z-index: 10; }
     .sidebar-brand { padding: 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
     .sidebar-brand h2 { color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
@@ -49,6 +51,7 @@
     .btn-manual { display: block; width: 100%; text-align: center; background-color: var(--yellow); color: var(--burgundy); padding: 10px; border-radius: 6px; font-weight: 800; font-size: 12px; text-decoration: none; transition: 0.3s; }
     .btn-manual:hover { background-color: #e6c200; }
 
+    /* Main Content Styling */
     .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
     .top-header { background-color: var(--white); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .clock-display { font-size: 13px; font-weight: 700; color: var(--burgundy); display: flex; align-items: center; gap: 8px; }
@@ -56,11 +59,13 @@
 
     .content-body { padding: 20px; }
 
+    /* Analytics Cards */
     .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
     .card-analytic { background: var(--white); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid var(--burgundy); display: flex; justify-content: space-between; align-items: center; }
     .card-analytic .num { font-size: 22px; font-weight: 800; color: var(--burgundy); }
     .card-analytic .label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
 
+    /* Tabs & Actions */
     .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
     .tab-btn { padding: 8px 14px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .tab-btn.active { background-color: var(--burgundy); color: var(--white); border-color: var(--burgundy); }
@@ -71,9 +76,10 @@
     .btn-bulk { background-color: var(--status-approved); color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: none; font-size: 12px; }
 
     .search-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 220px; font-size: 12px; }
+    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 200px; font-size: 12px; }
     .date-filter { padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
 
+    /* Table Styling */
     .table-card { background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
     th { background-color: var(--burgundy); color: var(--white); padding: 10px 12px; font-weight: 700; white-space: nowrap; }
@@ -92,15 +98,7 @@
     .pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #eee; }
     .btn-page { padding: 5px 10px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
 
-    .timeline-wrapper { display: flex; justify-content: space-between; margin: 15px 0 20px 0; position: relative; }
-    .timeline-wrapper::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 3px; background: #e0e0e0; z-index: 1; }
-    .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
-    .step-icon { width: 32px; height: 32px; border-radius: 50%; background: #ccc; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px auto; font-size: 12px; font-weight: bold; }
-    .step-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #555; }
-    .step-approved .step-icon { background: var(--status-approved); }
-    .step-disapproved .step-icon { background: var(--status-disapproved); }
-    .step-pending .step-icon { background: var(--status-pending); color: black; }
-
+    /* Modals */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
     .modal.active { display: flex; }
     .modal-content { background: var(--white); border-radius: 8px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--burgundy); }
@@ -217,7 +215,7 @@
           <input type="date" id="dateFrom" class="date-filter" onchange="renderTable()">
           <span style="font-size:11px; font-weight:bold;">to</span>
           <input type="date" id="dateTo" class="date-filter" onchange="renderTable()">
-          <input type="text" id="searchInput" class="search-input" placeholder="Search ID, Branch, PO, GE..." onkeyup="filterTable()">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search Request ID, Branch..." onkeyup="filterTable()">
         </div>
       </div>
 
@@ -267,8 +265,8 @@
         <div class="modal-body">
           <div class="form-group">
             <label>Liham Pahintulot For</label>
-            <select class="form-control" id="lihamFor" required onchange="handleLihamForChange(); saveFormDraft();">
-              <option value="" selected disabled>-- Pumili ng Mode --</option>
+            <select class="form-control" id="lihamFor" required onchange="handleLihamForChange()">
+              <option value="">-- Pumili ng Mode --</option>
               <option value="Pasabay To">Pasabay To</option>
               <option value="Pasabay to Shuttle">Pasabay to Shuttle</option>
               <option value="Pickup to Central">Pickup to Central</option>
@@ -278,18 +276,17 @@
 
           <div class="form-group hidden" id="modePasabayGroup">
             <label>Piliin ang Target Branch na Pagsasabayan</label>
-            <select class="form-control" id="pasabayTargetBranch" onchange="saveFormDraft()"></select>
+            <select class="form-control" id="pasabayTargetBranch"></select>
           </div>
 
           <div class="form-group hidden" id="modeShuttleGroup">
             <label>Anong Shuttle ang Pagsasabayan?</label>
-            <input type="text" class="form-control" id="shuttleName" placeholder="Isulat ang pangalan ng shuttle" oninput="saveFormDraft()">
+            <input type="text" class="form-control" id="shuttleName" placeholder="Isulat ang pangalan ng shuttle">
           </div>
 
           <div class="form-group hidden" id="modeCourierGroup">
             <label>Courier Option</label>
-            <select class="form-control" id="courierOption" onchange="handleCourierChange(); saveFormDraft();">
-              <option value="" selected disabled>-- Pumili ng Courier Option --</option>
+            <select class="form-control" id="courierOption" onchange="handleCourierChange()">
               <option value="Direct Delivery to Panauhin">Direct Delivery to Panauhin</option>
               <option value="Drop to Branch">Drop to Branch</option>
             </select>
@@ -302,17 +299,12 @@
 
           <div class="form-group">
             <label>Requested By (Pangalan)</label>
-            <input type="text" class="form-control" id="requestedBy" required oninput="saveFormDraft()">
+            <input type="text" class="form-control" id="requestedBy" required>
           </div>
 
           <div class="form-group">
             <label>Request From (Branch)</label>
-            <select class="form-control" id="requestFrom" required onchange="handleBranchSelection(); saveFormDraft();"></select>
-          </div>
-
-          <div class="form-group" style="background:#f8f9fa; padding:10px; border-radius:5px; border:1px solid #ddd;">
-            <label style="color:var(--burgundy);">Nakatalagang GE Approver (Auto-Detected)</label>
-            <p style="font-size:12px; font-weight:bold;" id="geDetectedInfo">Pumili ng Branch sa itaas para makita ang GE.</p>
+            <select class="form-control" id="requestFrom" required></select>
           </div>
 
           <div class="form-group">
@@ -323,8 +315,7 @@
 
           <div class="form-group">
             <label>Reason For Request</label>
-            <select class="form-control" id="requestReason" required onchange="handleReasonChange(); saveFormDraft();">
-              <option value="" selected disabled>-- Pumili ng Dahilan --</option>
+            <select class="form-control" id="requestReason" required onchange="handleReasonChange()">
               <option value="Regular Stock">Regular Stock</option>
               <option value="Panauhin Order">Panauhin Order</option>
               <option value="Short Stock">Short Stock</option>
@@ -334,21 +325,15 @@
 
           <div class="form-group hidden" id="otherReasonGroup">
             <label>Isulat ang Ibang Dahilan (Other Reason)</label>
-            <input type="text" class="form-control" id="otherReasonInput" oninput="saveFormDraft()">
+            <input type="text" class="form-control" id="otherReasonInput">
           </div>
 
           <div class="form-group">
             <label>KPP (Kwento sa Pagkaunawa ng Pangyayari)</label>
-            <textarea class="form-control" id="kppInput" rows="3" placeholder="Ipaliwanag kung bakit nanghihingi ng pahintulot..." required oninput="saveFormDraft()"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label>Other Attachment (Ilagay ang iba pang attachment ng request - Optional)</label>
-            <input type="file" class="form-control" id="otherAttachmentFile">
+            <textarea class="form-control" id="kppInput" rows="3" placeholder="Ipaliwanag kung bakit nanghihingi ng pahintulot..." required></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn-page" style="background:#dc3545; color:white; border:none;" onclick="clearFormDraft()">CLEAR FORM</button>
           <button type="button" class="btn-page" onclick="closeModal('requestModal')">Kanselahin</button>
           <button type="submit" class="btn-primary" id="btnSubmitRequest">I-SUBMIT REQUEST</button>
         </div>
@@ -399,7 +384,7 @@
     </div>
   </div>
 
-  <!-- HELP DESK MODAL -->
+  <!-- HELP DESK & SUGGESTION MODAL -->
   <div class="modal" id="helpDeskModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -411,7 +396,6 @@
           <div class="form-group">
             <label>Kategorya (Category)</label>
             <select class="form-control" id="helpCategory" required>
-              <option value="" selected disabled>-- Pumili ng Kategorya --</option>
               <option value="Support Request / Tulong">Support Request / Tulong</option>
               <option value="Suggestion / Mungkahi">Suggestion / Mungkahi</option>
             </select>
@@ -424,7 +408,7 @@
 
           <div class="form-group">
             <label>Detaye ng Tulong o Mungkahi</label>
-            <textarea class="form-control" id="helpDetails" rows="4" placeholder="Isulat nang buo ang detalye ng iyong concern..." required></textarea>
+            <textarea class="form-control" id="helpDetails" rows="4" placeholder="Isulat nang buo ang detalye ng iyong concern o suggestion..." required></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -436,19 +420,17 @@
   </div>
 
   <script>
-    // PANIBAGONG WEB APP DEPLOYMENT URL
-    const API_URL = "https://script.google.com/macros/s/AKfycbwhP1l-3TtFSTsrnJoVnA6VyfHHDZZlHWl3Obqc_my_661c9wJojis7sTn9_WkU7ZEf/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbz1pejRMnoZ30YKbiWzW5j7z1J8Y2C1I9SFbTLK11E9JJsMB11zdmNPiO4_k1KI3fI/exec";
 
     let currentUser = null;
     let allRequests = [];
     let ddlBranches = [];
     let ddlKawans = [];
-    let geMap = {};
     let currentTab = 'PENDING';
     let currentPage = 1;
     const recordsPerPage = 10;
 
-    window.addEventListener('DOMContentLoaded', async () => {
+    window.addEventListener('DOMContentLoaded', () => {
       const stored = localStorage.getItem('pandayan_user') || sessionStorage.getItem('pandayan_user');
       if (!stored) { window.location.href = 'index.html'; return; }
       currentUser = JSON.parse(stored);
@@ -457,9 +439,13 @@
       document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
       startLiveClock();
+      initializeApp();
+    });
+
+    async function initializeApp() {
       await fetchDDLData();
       await loadDashboardData();
-    });
+    }
 
     function startLiveClock() {
       setInterval(() => {
@@ -489,7 +475,6 @@
         if (res.success) {
           ddlBranches = res.branches || [];
           ddlKawans = res.kawans || [];
-          geMap = res.geMap || {};
           populateDropdowns();
         }
       } catch (e) { console.error("Error fetching DDL:", e); }
@@ -500,45 +485,14 @@
       const pasabay = document.getElementById('pasabayTargetBranch');
       if (!reqFrom || !pasabay) return;
 
-      reqFrom.innerHTML = '<option value="" selected disabled>-- Pumili ng Branch --</option>';
-      pasabay.innerHTML = '<option value="" selected disabled>-- Pumili ng Target Branch --</option>';
+      reqFrom.innerHTML = ''; pasabay.innerHTML = '';
 
       ddlBranches.forEach(b => {
         reqFrom.innerHTML += `<option value="${b}">${b}</option>`;
         pasabay.innerHTML += `<option value="${b}">${b}</option>`;
       });
 
-      if (currentUser.access && currentUser.role === 'Viewer') {
-        reqFrom.value = currentUser.access;
-        handleBranchSelection();
-      }
-    }
-
-    function handleBranchSelection() {
-      const selectElem = document.getElementById('requestFrom');
-      const display = document.getElementById('geDetectedInfo');
-      if (!selectElem || !display) return;
-
-      const rawBranch = selectElem.value;
-      if (!rawBranch || rawBranch === "" || rawBranch.includes("-- Pumili")) {
-        display.innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
-        return;
-      }
-
-      if (!geMap || Object.keys(geMap).length === 0) {
-        display.innerHTML = `<span style="color:#e67e22;"><i class="fa-solid fa-spinner fa-spin"></i> Kumukuha ng GE Data...</span>`;
-        setTimeout(handleBranchSelection, 400);
-        return;
-      }
-
-      const branchKey = String(rawBranch).trim().toUpperCase();
-      const info = geMap[branchKey];
-
-      if (info && (info.geName || info.geEmail)) {
-        display.innerHTML = `<span style="color:#28a745; font-weight:bold;"><i class="fa-solid fa-circle-check"></i> ${info.geName || 'GE'}</span> <small style="color:#555;">(${info.geEmail || 'No Email Registered'})</small>`;
-      } else {
-        display.innerHTML = `<span style="color:#dc3545; font-weight:bold;"><i class="fa-solid fa-circle-xmark"></i> Walang nahanap na GE sa branch na ito (${rawBranch}).</span>`;
-      }
+      if (currentUser.access && currentUser.role === 'Viewer') reqFrom.value = currentUser.access;
     }
 
     async function loadDashboardData(retryCount = 0) {
@@ -556,19 +510,22 @@
         const res = await response.json();
         if (res.success) {
           allRequests = res.requests || [];
+          
           document.getElementById('countPending').innerText = res.summary ? res.summary.pending : 0;
           document.getElementById('countApproved').innerText = res.summary ? res.summary.approved : 0;
           document.getElementById('countDisapproved').innerText = res.summary ? res.summary.disapproved : 0;
           document.getElementById('countSSU').innerText = res.summary ? res.summary.ssu : 0;
+
           renderTable();
         } else {
           tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">' + (res.message || 'Error sa pagkuha ng data.') + '</td></tr>';
         }
       } catch (e) {
+        console.error("Dashboard fetch error:", e);
         if (retryCount < 2) {
           setTimeout(() => loadDashboardData(retryCount + 1), 1500);
         } else {
-          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Kumukonekta pa sa system. Mangyaring i-refresh ang page.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Kumukonekta pa sa system. Mangyaring i-refresh ang page kung hindi kusa lumabas.</td></tr>';
         }
       }
     }
@@ -585,6 +542,7 @@
         if (currentTab === 'SSU') matchesStatus = req.ssuDate !== '';
 
         if (!matchesStatus) return false;
+
         if (dFrom && req.timestamp.slice(0, 10) < dFrom) return false;
         if (dTo && req.timestamp.slice(0, 10) > dTo) return false;
 
@@ -637,7 +595,9 @@
       updateBulkButton();
     }
 
-    function handleRowClick(event, reqId) { viewDetails(reqId); }
+    function handleRowClick(event, reqId) {
+      viewDetails(reqId);
+    }
 
     function switchTab(tab, btn) {
       currentTab = tab;
@@ -710,28 +670,7 @@
 
       document.getElementById('viewModalTitle').innerText = `Request Details: ${req.requestId}`;
 
-      const getStepClass = (stat) => {
-        if (stat === 'APPROVED') return 'step-approved';
-        if (stat === 'DISAPPROVED') return 'step-disapproved';
-        return 'step-pending';
-      };
-
       let html = `
-        <div class="timeline-wrapper">
-          <div class="step-item ${getStepClass(req.geStatus)}">
-            <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
-            <div class="step-label">1. GE Approval</div>
-          </div>
-          <div class="step-item ${getStepClass(req.hatidSundoStatus)}">
-            <div class="step-icon"><i class="fa-solid fa-truck-ram"></i></div>
-            <div class="step-label">2. Hatid Sundo</div>
-          </div>
-          <div class="step-item ${getStepClass(req.kawanStatus)}">
-            <div class="step-icon"><i class="fa-solid fa-store"></i></div>
-            <div class="step-label">3. Kawan / Tilap</div>
-          </div>
-        </div>
-
         <table class="view-table">
           <tr><th>Request ID</th><td><b>${req.requestId}</b></td></tr>
           <tr><th>Date Filed</th><td>${req.timestamp}</td></tr>
@@ -747,9 +686,18 @@
 
         <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Approval Remarks & History</h4>
         <table class="view-table">
-          <tr><th>GE</th><td><b>${req.geStatus}</b> | ${req.geApprover || 'N/A'} <br><small>${req.geRemarks ? 'Remarks: ' + req.geRemarks : ''}</small></td></tr>
-          <tr><th>Hatid-Sundo</th><td><b>${req.hatidSundoStatus}</b> | ${req.hatidSundoApprover || 'N/A'} <br><small>${req.hatidSundoRemarks ? 'Remarks: ' + req.hatidSundoRemarks : ''}</small></td></tr>
-          <tr><th>Kawan/Tilap</th><td><b>${req.kawanStatus}</b> | ${req.kawanApprover || 'N/A'} <br><small>${req.kawanRemarks ? 'Remarks: ' + req.kawanRemarks : ''}</small></td></tr>
+          <tr>
+            <th>GE</th>
+            <td><b>${req.geStatus}</b> | ${req.geApprover || 'N/A'} <br><small>${req.geRemarks ? 'Remarks: ' + req.geRemarks : ''}</small></td>
+          </tr>
+          <tr>
+            <th>Hatid-Sundo</th>
+            <td><b>${req.hatidSundoStatus}</b> | ${req.hatidSundoApprover || 'N/A'} <br><small>${req.hatidSundoRemarks ? 'Remarks: ' + req.hatidSundoRemarks : ''}</small></td>
+          </tr>
+          <tr>
+            <th>Kawan/Tilap</th>
+            <td><b>${req.kawanStatus}</b> | ${req.kawanApprover || 'N/A'} <br><small>${req.kawanRemarks ? 'Remarks: ' + req.kawanRemarks : ''}</small></td>
+          </tr>
         </table>
 
         ${req.ssuDate ? `
@@ -764,7 +712,6 @@
         <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Attachments & Documents</h4>
         <div>
           ${req.posReceipt ? `<p style="font-size:12px; margin-bottom:4px;"><b>POS Receipt:</b> <a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></p>` : ''}
-          ${req.otherAttachment ? `<p style="font-size:12px; margin-bottom:4px;"><b>Other Attachment:</b> <a href="${req.otherAttachment}" target="_blank">Tingnan ang Other Attachment</a></p>` : ''}
           ${req.pdfUrl ? `<p style="font-size:12px;"><b>Liham Pahintulot PDF:</b> <a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download PDF Document</a></p>` : ''}
         </div>
       `;
@@ -811,18 +758,15 @@
       } catch (err) { alert('Error sa pagproseso ng approval.'); }
     }
 
-    function addKawanRow(savedKawan = '', savedPO = '') {
+    function addKawanRow() {
       const container = document.getElementById('kawanContainer');
       const div = document.createElement('div');
       div.className = 'kawan-row';
-
-      let options = '<option value="" selected disabled>-- Pumili ng Kawan --</option>';
-      options += ddlKawans.map(k => `<option value="${k}" ${k === savedKawan ? 'selected' : ''}>${k}</option>`).join('');
-
+      let options = ddlKawans.map(k => `<option value="${k}">${k}</option>`).join('');
       div.innerHTML = `
-        <select class="form-control kawan-select" required onchange="saveFormDraft()">${options}</select>
-        <input type="text" class="form-control po-input" placeholder="P.O. Number" value="${savedPO}" required oninput="saveFormDraft()">
-        <button type="button" class="btn-remove-kawan" onclick="this.parentElement.remove(); saveFormDraft();"><i class="fa-solid fa-trash"></i></button>
+        <select class="form-control kawan-select" required>${options}</select>
+        <input type="text" class="form-control po-input" placeholder="P.O. Number" required>
+        <button type="button" class="btn-remove-kawan" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(div);
     }
@@ -834,77 +778,8 @@
       document.getElementById('requestForm').reset();
       document.getElementById('kawanContainer').innerHTML = '';
       document.getElementById('requestedBy').value = currentUser.kapwaName;
-      document.getElementById('geDetectedInfo').innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
-      loadFormDraft();
+      addKawanRow();
       openModal('requestModal');
-    }
-
-    function saveFormDraft() {
-      const kawanList = [];
-      document.querySelectorAll('.kawan-row').forEach(row => {
-        const select = row.querySelector('.kawan-select');
-        const poInput = row.querySelector('.po-input');
-        if (select && poInput) {
-          kawanList.push({ kawan: select.value, poNumber: poInput.value });
-        }
-      });
-
-      const draft = {
-        lihamFor: document.getElementById('lihamFor').value,
-        pasabayTargetBranch: document.getElementById('pasabayTargetBranch').value,
-        shuttleName: document.getElementById('shuttleName').value,
-        courierOption: document.getElementById('courierOption').value,
-        requestedBy: document.getElementById('requestedBy').value,
-        requestFrom: document.getElementById('requestFrom').value,
-        requestReason: document.getElementById('requestReason').value,
-        otherReasonInput: document.getElementById('otherReasonInput').value,
-        kppInput: document.getElementById('kppInput').value,
-        kawanList: kawanList
-      };
-      localStorage.setItem('liham_form_draft', JSON.stringify(draft));
-    }
-
-    function loadFormDraft() {
-      const saved = localStorage.getItem('liham_form_draft');
-      if (!saved) { addKawanRow(); return; }
-      const draft = JSON.parse(saved);
-
-      if (draft.lihamFor) document.getElementById('lihamFor').value = draft.lihamFor;
-      handleLihamForChange();
-
-      if (draft.pasabayTargetBranch) document.getElementById('pasabayTargetBranch').value = draft.pasabayTargetBranch;
-      if (draft.shuttleName) document.getElementById('shuttleName').value = draft.shuttleName;
-      if (draft.courierOption) document.getElementById('courierOption').value = draft.courierOption;
-      handleCourierChange();
-
-      if (draft.requestedBy) document.getElementById('requestedBy').value = draft.requestedBy;
-      if (draft.requestFrom) {
-        document.getElementById('requestFrom').value = draft.requestFrom;
-        setTimeout(handleBranchSelection, 150);
-      }
-
-      if (draft.requestReason) document.getElementById('requestReason').value = draft.requestReason;
-      handleReasonChange();
-
-      if (draft.otherReasonInput) document.getElementById('otherReasonInput').value = draft.otherReasonInput;
-      if (draft.kppInput) document.getElementById('kppInput').value = draft.kppInput;
-
-      if (draft.kawanList && draft.kawanList.length > 0) {
-        draft.kawanList.forEach(item => addKawanRow(item.kawan, item.poNumber));
-      } else {
-        addKawanRow();
-      }
-    }
-
-    function clearFormDraft() {
-      if (confirm("Sigurado ka bang nais mong burahin ang naka-draft na form data?")) {
-        localStorage.removeItem('liham_form_draft');
-        document.getElementById('requestForm').reset();
-        document.getElementById('kawanContainer').innerHTML = '';
-        document.getElementById('requestedBy').value = currentUser.kapwaName;
-        document.getElementById('geDetectedInfo').innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
-        addKawanRow();
-      }
     }
 
     function handleLihamForChange() {
@@ -957,25 +832,10 @@
       const fileInput = document.getElementById('posReceiptFile');
       if (fileInput.files.length > 0) posReceiptFile = await compressImage(fileInput.files[0]);
 
-      let otherAttachmentFile = '';
-      const otherInput = document.getElementById('otherAttachmentFile');
-      if (otherInput.files.length > 0) otherAttachmentFile = await compressImage(otherInput.files[0]);
-
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
-        const select = row.querySelector('.kawan-select');
-        const poInput = row.querySelector('.po-input');
-        if (select && poInput && select.value) {
-          kawanList.push({ kawan: select.value, poNumber: poInput.value });
-        }
+        kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
       });
-
-      if (kawanList.length === 0) {
-        alert("Pumili muna ng Kawan at maglagay ng P.O. Number.");
-        btn.disabled = false;
-        btn.innerText = 'I-SUBMIT REQUEST';
-        return;
-      }
 
       const modeVal = document.getElementById('lihamFor').value;
       let modeRemarks = '';
@@ -993,7 +853,6 @@
         lihamFor: modeVal,
         modeRemarks: modeRemarks,
         posReceiptFile: posReceiptFile,
-        otherAttachmentFile: otherAttachmentFile,
         kawanList: kawanList,
         reason: finalReason,
         kpp: document.getElementById('kppInput').value
@@ -1007,7 +866,6 @@
         });
         const res = await response.json();
         alert(res.message);
-        localStorage.removeItem('liham_form_draft');
         closeModal('requestModal');
         loadDashboardData();
       } catch (err) { alert('Error sa submission.'); }
