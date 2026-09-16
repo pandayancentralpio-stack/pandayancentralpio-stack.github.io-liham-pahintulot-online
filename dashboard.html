@@ -76,7 +76,7 @@
     .btn-bulk { background-color: var(--status-approved); color: var(--white); border: none; padding: 9px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: none; font-size: 12px; }
 
     .search-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 200px; font-size: 12px; }
+    .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 220px; font-size: 12px; }
     .date-filter { padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
 
     /* Table Styling */
@@ -97,6 +97,16 @@
 
     .pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #eee; }
     .btn-page { padding: 5px 10px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
+
+    /* Timeline Tracker Component */
+    .timeline-wrapper { display: flex; justify-content: space-between; margin: 15px 0 20px 0; position: relative; }
+    .timeline-wrapper::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 3px; background: #e0e0e0; z-index: 1; }
+    .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
+    .step-icon { width: 32px; height: 32px; border-radius: 50%; background: #ccc; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px auto; font-size: 12px; font-weight: bold; }
+    .step-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #555; }
+    .step-approved .step-icon { background: var(--status-approved); }
+    .step-disapproved .step-icon { background: var(--status-disapproved); }
+    .step-pending .step-icon { background: var(--status-pending); color: black; }
 
     /* Modals */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
@@ -215,7 +225,7 @@
           <input type="date" id="dateFrom" class="date-filter" onchange="renderTable()">
           <span style="font-size:11px; font-weight:bold;">to</span>
           <input type="date" id="dateTo" class="date-filter" onchange="renderTable()">
-          <input type="text" id="searchInput" class="search-input" placeholder="Search Request ID, Branch..." onkeyup="filterTable()">
+          <input type="text" id="searchInput" class="search-input" placeholder="Search ID, Branch, PO, GE..." onkeyup="filterTable()">
         </div>
       </div>
 
@@ -265,8 +275,8 @@
         <div class="modal-body">
           <div class="form-group">
             <label>Liham Pahintulot For</label>
-            <select class="form-control" id="lihamFor" required onchange="handleLihamForChange()">
-              <option value="">-- Pumili ng Mode --</option>
+            <select class="form-control" id="lihamFor" required onchange="handleLihamForChange(); saveFormDraft();">
+              <option value="" selected disabled>-- Pumili ng Mode --</option>
               <option value="Pasabay To">Pasabay To</option>
               <option value="Pasabay to Shuttle">Pasabay to Shuttle</option>
               <option value="Pickup to Central">Pickup to Central</option>
@@ -276,17 +286,18 @@
 
           <div class="form-group hidden" id="modePasabayGroup">
             <label>Piliin ang Target Branch na Pagsasabayan</label>
-            <select class="form-control" id="pasabayTargetBranch"></select>
+            <select class="form-control" id="pasabayTargetBranch" onchange="saveFormDraft()"></select>
           </div>
 
           <div class="form-group hidden" id="modeShuttleGroup">
             <label>Anong Shuttle ang Pagsasabayan?</label>
-            <input type="text" class="form-control" id="shuttleName" placeholder="Isulat ang pangalan ng shuttle">
+            <input type="text" class="form-control" id="shuttleName" placeholder="Isulat ang pangalan ng shuttle" oninput="saveFormDraft()">
           </div>
 
           <div class="form-group hidden" id="modeCourierGroup">
             <label>Courier Option</label>
-            <select class="form-control" id="courierOption" onchange="handleCourierChange()">
+            <select class="form-control" id="courierOption" onchange="handleCourierChange(); saveFormDraft();">
+              <option value="" selected disabled>-- Pumili ng Courier Option --</option>
               <option value="Direct Delivery to Panauhin">Direct Delivery to Panauhin</option>
               <option value="Drop to Branch">Drop to Branch</option>
             </select>
@@ -299,12 +310,17 @@
 
           <div class="form-group">
             <label>Requested By (Pangalan)</label>
-            <input type="text" class="form-control" id="requestedBy" required>
+            <input type="text" class="form-control" id="requestedBy" required oninput="saveFormDraft()">
           </div>
 
           <div class="form-group">
             <label>Request From (Branch)</label>
-            <select class="form-control" id="requestFrom" required></select>
+            <select class="form-control" id="requestFrom" required onchange="handleBranchSelection(); saveFormDraft();"></select>
+          </div>
+
+          <div class="form-group" style="background:#f8f9fa; padding:10px; border-radius:5px; border:1px solid #ddd;">
+            <label style="color:var(--burgundy);">Nakatalagang GE Approver (Auto-Detected)</label>
+            <p style="font-size:12px; font-weight:bold;" id="geDetectedInfo">Loading GE Details...</p>
           </div>
 
           <div class="form-group">
@@ -315,7 +331,8 @@
 
           <div class="form-group">
             <label>Reason For Request</label>
-            <select class="form-control" id="requestReason" required onchange="handleReasonChange()">
+            <select class="form-control" id="requestReason" required onchange="handleReasonChange(); saveFormDraft();">
+              <option value="" selected disabled>-- Pumili ng Dahilan --</option>
               <option value="Regular Stock">Regular Stock</option>
               <option value="Panauhin Order">Panauhin Order</option>
               <option value="Short Stock">Short Stock</option>
@@ -325,15 +342,21 @@
 
           <div class="form-group hidden" id="otherReasonGroup">
             <label>Isulat ang Ibang Dahilan (Other Reason)</label>
-            <input type="text" class="form-control" id="otherReasonInput">
+            <input type="text" class="form-control" id="otherReasonInput" oninput="saveFormDraft()">
           </div>
 
           <div class="form-group">
             <label>KPP (Kwento sa Pagkaunawa ng Pangyayari)</label>
-            <textarea class="form-control" id="kppInput" rows="3" placeholder="Ipaliwanag kung bakit nanghihingi ng pahintulot..." required></textarea>
+            <textarea class="form-control" id="kppInput" rows="3" placeholder="Ipaliwanag kung bakit nanghihingi ng pahintulot..." required oninput="saveFormDraft()"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Other Attachment (Ilagay ang iba pang attachment ng request - Optional)</label>
+            <input type="file" class="form-control" id="otherAttachmentFile">
           </div>
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn-page" style="background:#dc3545; color:white; border:none;" onclick="clearFormDraft()">CLEAR FORM</button>
           <button type="button" class="btn-page" onclick="closeModal('requestModal')">Kanselahin</button>
           <button type="submit" class="btn-primary" id="btnSubmitRequest">I-SUBMIT REQUEST</button>
         </div>
@@ -384,7 +407,7 @@
     </div>
   </div>
 
-  <!-- HELP DESK & SUGGESTION MODAL -->
+  <!-- HELP DESK MODAL -->
   <div class="modal" id="helpDeskModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -396,6 +419,7 @@
           <div class="form-group">
             <label>Kategorya (Category)</label>
             <select class="form-control" id="helpCategory" required>
+              <option value="" selected disabled>-- Pumili ng Kategorya --</option>
               <option value="Support Request / Tulong">Support Request / Tulong</option>
               <option value="Suggestion / Mungkahi">Suggestion / Mungkahi</option>
             </select>
@@ -408,7 +432,7 @@
 
           <div class="form-group">
             <label>Detaye ng Tulong o Mungkahi</label>
-            <textarea class="form-control" id="helpDetails" rows="4" placeholder="Isulat nang buo ang detalye ng iyong concern o suggestion..." required></textarea>
+            <textarea class="form-control" id="helpDetails" rows="4" placeholder="Isulat nang buo ang detalye ng iyong concern..." required></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -420,17 +444,18 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw-8zpILjurBfuHwrk9rsZACetLjTKYocc3H7Vw0IiZzZdUEZigE1jO2kRCDF2RGvNl/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
 
     let currentUser = null;
     let allRequests = [];
     let ddlBranches = [];
     let ddlKawans = [];
+    let geMap = {};
     let currentTab = 'PENDING';
     let currentPage = 1;
     const recordsPerPage = 10;
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       const stored = localStorage.getItem('pandayan_user') || sessionStorage.getItem('pandayan_user');
       if (!stored) { window.location.href = 'index.html'; return; }
       currentUser = JSON.parse(stored);
@@ -439,13 +464,9 @@
       document.getElementById('sidebarUserRole').innerText = currentUser.role;
 
       startLiveClock();
-      initializeApp();
-    });
-
-    async function initializeApp() {
       await fetchDDLData();
       await loadDashboardData();
-    }
+    });
 
     function startLiveClock() {
       setInterval(() => {
@@ -475,6 +496,7 @@
         if (res.success) {
           ddlBranches = res.branches || [];
           ddlKawans = res.kawans || [];
+          geMap = res.geMap || {};
           populateDropdowns();
         }
       } catch (e) { console.error("Error fetching DDL:", e); }
@@ -485,14 +507,29 @@
       const pasabay = document.getElementById('pasabayTargetBranch');
       if (!reqFrom || !pasabay) return;
 
-      reqFrom.innerHTML = ''; pasabay.innerHTML = '';
+      reqFrom.innerHTML = '<option value="" selected disabled>-- Pumili ng Branch --</option>';
+      pasabay.innerHTML = '<option value="" selected disabled>-- Pumili ng Target Branch --</option>';
 
       ddlBranches.forEach(b => {
         reqFrom.innerHTML += `<option value="${b}">${b}</option>`;
         pasabay.innerHTML += `<option value="${b}">${b}</option>`;
       });
 
-      if (currentUser.access && currentUser.role === 'Viewer') reqFrom.value = currentUser.access;
+      if (currentUser.access && currentUser.role === 'Viewer') {
+        reqFrom.value = currentUser.access;
+        handleBranchSelection();
+      }
+    }
+
+    function handleBranchSelection() {
+      const selectedBranch = document.getElementById('requestFrom').value;
+      const info = geMap[selectedBranch];
+      const display = document.getElementById('geDetectedInfo');
+      if (info) {
+        display.innerText = `${info.geName || 'GE'} (${info.geEmail || 'No Email Registered'})`;
+      } else {
+        display.innerText = "Walang nahanap na GE sa branch na ito.";
+      }
     }
 
     async function loadDashboardData(retryCount = 0) {
@@ -521,7 +558,6 @@
           tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">' + (res.message || 'Error sa pagkuha ng data.') + '</td></tr>';
         }
       } catch (e) {
-        console.error("Dashboard fetch error:", e);
         if (retryCount < 2) {
           setTimeout(() => loadDashboardData(retryCount + 1), 1500);
         } else {
@@ -595,9 +631,7 @@
       updateBulkButton();
     }
 
-    function handleRowClick(event, reqId) {
-      viewDetails(reqId);
-    }
+    function handleRowClick(event, reqId) { viewDetails(reqId); }
 
     function switchTab(tab, btn) {
       currentTab = tab;
@@ -670,7 +704,29 @@
 
       document.getElementById('viewModalTitle').innerText = `Request Details: ${req.requestId}`;
 
+      const getStepClass = (stat) => {
+        if (stat === 'APPROVED') return 'step-approved';
+        if (stat === 'DISAPPROVED') return 'step-disapproved';
+        return 'step-pending';
+      };
+
       let html = `
+        <!-- Color-Coded Timeline Tracker -->
+        <div class="timeline-wrapper">
+          <div class="step-item ${getStepClass(req.geStatus)}">
+            <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
+            <div class="step-label">1. GE Approval</div>
+          </div>
+          <div class="step-item ${getStepClass(req.hatidSundoStatus)}">
+            <div class="step-icon"><i class="fa-solid fa-truck-ram"></i></div>
+            <div class="step-label">2. Hatid Sundo</div>
+          </div>
+          <div class="step-item ${getStepClass(req.kawanStatus)}">
+            <div class="step-icon"><i class="fa-solid fa-store"></i></div>
+            <div class="step-label">3. Kawan / Tilap</div>
+          </div>
+        </div>
+
         <table class="view-table">
           <tr><th>Request ID</th><td><b>${req.requestId}</b></td></tr>
           <tr><th>Date Filed</th><td>${req.timestamp}</td></tr>
@@ -712,6 +768,7 @@
         <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Attachments & Documents</h4>
         <div>
           ${req.posReceipt ? `<p style="font-size:12px; margin-bottom:4px;"><b>POS Receipt:</b> <a href="${req.posReceipt}" target="_blank">Tingnan ang Resibo</a></p>` : ''}
+          ${req.otherAttachment ? `<p style="font-size:12px; margin-bottom:4px;"><b>Other Attachment:</b> <a href="${req.otherAttachment}" target="_blank">Tingnan ang Other Attachment</a></p>` : ''}
           ${req.pdfUrl ? `<p style="font-size:12px;"><b>Liham Pahintulot PDF:</b> <a href="${req.pdfUrl}" target="_blank" class="pdf-link"><i class="fa-solid fa-file-pdf"></i> Download PDF Document</a></p>` : ''}
         </div>
       `;
@@ -758,15 +815,15 @@
       } catch (err) { alert('Error sa pagproseso ng approval.'); }
     }
 
-    function addKawanRow() {
+    function addKawanRow(savedKawan = '', savedPO = '') {
       const container = document.getElementById('kawanContainer');
       const div = document.createElement('div');
       div.className = 'kawan-row';
-      let options = ddlKawans.map(k => `<option value="${k}">${k}</option>`).join('');
+      let options = ddlKawans.map(k => `<option value="${k}" ${k === savedKawan ? 'selected' : ''}>${k}</option>`).join('');
       div.innerHTML = `
-        <select class="form-control kawan-select" required>${options}</select>
-        <input type="text" class="form-control po-input" placeholder="P.O. Number" required>
-        <button type="button" class="btn-remove-kawan" onclick="this.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+        <select class="form-control kawan-select" required onchange="saveFormDraft()">${options}</select>
+        <input type="text" class="form-control po-input" placeholder="P.O. Number" value="${savedPO}" required oninput="saveFormDraft()">
+        <button type="button" class="btn-remove-kawan" onclick="this.parentElement.remove(); saveFormDraft();"><i class="fa-solid fa-trash"></i></button>
       `;
       container.appendChild(div);
     }
@@ -778,8 +835,70 @@
       document.getElementById('requestForm').reset();
       document.getElementById('kawanContainer').innerHTML = '';
       document.getElementById('requestedBy').value = currentUser.kapwaName;
-      addKawanRow();
+      loadFormDraft();
       openModal('requestModal');
+    }
+
+    // Local Storage Form Auto-Save Draft
+    function saveFormDraft() {
+      const kawanList = [];
+      document.querySelectorAll('.kawan-row').forEach(row => {
+        kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
+      });
+
+      const draft = {
+        lihamFor: document.getElementById('lihamFor').value,
+        pasabayTargetBranch: document.getElementById('pasabayTargetBranch').value,
+        shuttleName: document.getElementById('shuttleName').value,
+        courierOption: document.getElementById('courierOption').value,
+        requestedBy: document.getElementById('requestedBy').value,
+        requestFrom: document.getElementById('requestFrom').value,
+        requestReason: document.getElementById('requestReason').value,
+        otherReasonInput: document.getElementById('otherReasonInput').value,
+        kppInput: document.getElementById('kppInput').value,
+        kawanList: kawanList
+      };
+      localStorage.setItem('liham_form_draft', JSON.stringify(draft));
+    }
+
+    function loadFormDraft() {
+      const saved = localStorage.getItem('liham_form_draft');
+      if (!saved) { addKawanRow(); return; }
+      const draft = JSON.parse(saved);
+
+      if (draft.lihamFor) document.getElementById('lihamFor').value = draft.lihamFor;
+      handleLihamForChange();
+
+      if (draft.pasabayTargetBranch) document.getElementById('pasabayTargetBranch').value = draft.pasabayTargetBranch;
+      if (draft.shuttleName) document.getElementById('shuttleName').value = draft.shuttleName;
+      if (draft.courierOption) document.getElementById('courierOption').value = draft.courierOption;
+      handleCourierChange();
+
+      if (draft.requestedBy) document.getElementById('requestedBy').value = draft.requestedBy;
+      if (draft.requestFrom) document.getElementById('requestFrom').value = draft.requestFrom;
+      handleBranchSelection();
+
+      if (draft.requestReason) document.getElementById('requestReason').value = draft.requestReason;
+      handleReasonChange();
+
+      if (draft.otherReasonInput) document.getElementById('otherReasonInput').value = draft.otherReasonInput;
+      if (draft.kppInput) document.getElementById('kppInput').value = draft.kppInput;
+
+      if (draft.kawanList && draft.kawanList.length > 0) {
+        draft.kawanList.forEach(item => addKawanRow(item.kawan, item.poNumber));
+      } else {
+        addKawanRow();
+      }
+    }
+
+    function clearFormDraft() {
+      if (confirm("Sigurado ka bang nais mong burahin ang naka-draft na form data?")) {
+        localStorage.removeItem('liham_form_draft');
+        document.getElementById('requestForm').reset();
+        document.getElementById('kawanContainer').innerHTML = '';
+        document.getElementById('requestedBy').value = currentUser.kapwaName;
+        addKawanRow();
+      }
     }
 
     function handleLihamForChange() {
@@ -832,6 +951,10 @@
       const fileInput = document.getElementById('posReceiptFile');
       if (fileInput.files.length > 0) posReceiptFile = await compressImage(fileInput.files[0]);
 
+      let otherAttachmentFile = '';
+      const otherInput = document.getElementById('otherAttachmentFile');
+      if (otherInput.files.length > 0) otherAttachmentFile = await compressImage(otherInput.files[0]);
+
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
         kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
@@ -853,6 +976,7 @@
         lihamFor: modeVal,
         modeRemarks: modeRemarks,
         posReceiptFile: posReceiptFile,
+        otherAttachmentFile: otherAttachmentFile,
         kawanList: kawanList,
         reason: finalReason,
         kpp: document.getElementById('kppInput').value
@@ -866,6 +990,7 @@
         });
         const res = await response.json();
         alert(res.message);
+        localStorage.removeItem('liham_form_draft');
         closeModal('requestModal');
         loadDashboardData();
       } catch (err) { alert('Error sa submission.'); }
@@ -937,6 +1062,7 @@
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT FEEDBACK'; }
     });
 
+    // Advanced Search & Multi-Column Filtering
     function filterTable() {
       const term = document.getElementById('searchInput').value.toLowerCase();
       const rows = document.querySelectorAll('#tableBody tr');
