@@ -22,7 +22,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: var(--gray-bg); display: flex; min-height: 100vh; flex-direction: row; }
 
-    /* Responsive Setup */
     @media (max-width: 900px) {
       body { flex-direction: column; }
       .sidebar { width: 100% !important; min-height: auto !important; }
@@ -32,7 +31,6 @@
       .analytics-grid { grid-template-columns: repeat(2, 1fr) !important; }
     }
 
-    /* Sidebar Styling */
     .sidebar { width: 260px; background: linear-gradient(180deg, var(--burgundy) 0%, var(--burgundy-dark) 100%); color: var(--white); display: flex; flex-direction: column; justify-content: space-between; box-shadow: 4px 0 10px rgba(0,0,0,0.15); z-index: 10; }
     .sidebar-brand { padding: 20px; text-align: center; border-bottom: 2px solid var(--yellow); }
     .sidebar-brand h2 { color: var(--yellow); font-size: 20px; font-weight: 800; letter-spacing: 1px; }
@@ -51,7 +49,6 @@
     .btn-manual { display: block; width: 100%; text-align: center; background-color: var(--yellow); color: var(--burgundy); padding: 10px; border-radius: 6px; font-weight: 800; font-size: 12px; text-decoration: none; transition: 0.3s; }
     .btn-manual:hover { background-color: #e6c200; }
 
-    /* Main Content Styling */
     .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
     .top-header { background-color: var(--white); padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .clock-display { font-size: 13px; font-weight: 700; color: var(--burgundy); display: flex; align-items: center; gap: 8px; }
@@ -59,13 +56,11 @@
 
     .content-body { padding: 20px; }
 
-    /* Analytics Cards */
     .analytics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
     .card-analytic { background: var(--white); padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid var(--burgundy); display: flex; justify-content: space-between; align-items: center; }
     .card-analytic .num { font-size: 22px; font-weight: 800; color: var(--burgundy); }
     .card-analytic .label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; }
 
-    /* Tabs & Actions */
     .tabs-container { display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
     .tab-btn { padding: 8px 14px; border: 1px solid #ccc; background-color: var(--white); border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
     .tab-btn.active { background-color: var(--burgundy); color: var(--white); border-color: var(--burgundy); }
@@ -79,7 +74,6 @@
     .search-input { padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; width: 220px; font-size: 12px; }
     .date-filter { padding: 7px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
 
-    /* Table Styling */
     .table-card { background-color: var(--white); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
     th { background-color: var(--burgundy); color: var(--white); padding: 10px 12px; font-weight: 700; white-space: nowrap; }
@@ -98,7 +92,6 @@
     .pagination { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-top: 1px solid #eee; }
     .btn-page { padding: 5px 10px; border: 1px solid #ccc; background: var(--white); border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
 
-    /* Timeline Tracker Component */
     .timeline-wrapper { display: flex; justify-content: space-between; margin: 15px 0 20px 0; position: relative; }
     .timeline-wrapper::before { content: ''; position: absolute; top: 15px; left: 15%; right: 15%; height: 3px; background: #e0e0e0; z-index: 1; }
     .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
@@ -108,7 +101,6 @@
     .step-disapproved .step-icon { background: var(--status-disapproved); }
     .step-pending .step-icon { background: var(--status-pending); color: black; }
 
-    /* Modals */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; padding: 15px; }
     .modal.active { display: flex; }
     .modal-content { background: var(--white); border-radius: 8px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--burgundy); }
@@ -444,7 +436,8 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
+    // PANIBAGONG WEB APP DEPLOYMENT URL
+    const API_URL = "https://script.google.com/macros/s/AKfycbwhP1l-3TtFSTsrnJoVnA6VyfHHDZZlHWl3Obqc_my_661c9wJojis7sTn9_WkU7ZEf/exec";
 
     let currentUser = null;
     let allRequests = [];
@@ -521,13 +514,20 @@
       }
     }
 
-    // FORTIFIED GE DETECTION ENGINE (Trim & UpperCase Case-Insensitive Matching)
     function handleBranchSelection() {
-      const rawBranch = document.getElementById('requestFrom').value;
+      const selectElem = document.getElementById('requestFrom');
       const display = document.getElementById('geDetectedInfo');
-      
-      if (!rawBranch) {
+      if (!selectElem || !display) return;
+
+      const rawBranch = selectElem.value;
+      if (!rawBranch || rawBranch === "" || rawBranch.includes("-- Pumili")) {
         display.innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
+        return;
+      }
+
+      if (!geMap || Object.keys(geMap).length === 0) {
+        display.innerHTML = `<span style="color:#e67e22;"><i class="fa-solid fa-spinner fa-spin"></i> Kumukuha ng GE Data...</span>`;
+        setTimeout(handleBranchSelection, 400);
         return;
       }
 
@@ -535,9 +535,9 @@
       const info = geMap[branchKey];
 
       if (info && (info.geName || info.geEmail)) {
-        display.innerHTML = `<span style="color:#28a745;"><i class="fa-solid fa-circle-check"></i> ${info.geName || 'GE'}</span> <small style="color:#555;">(${info.geEmail || 'No Email Registered'})</small>`;
+        display.innerHTML = `<span style="color:#28a745; font-weight:bold;"><i class="fa-solid fa-circle-check"></i> ${info.geName || 'GE'}</span> <small style="color:#555;">(${info.geEmail || 'No Email Registered'})</small>`;
       } else {
-        display.innerHTML = `<span style="color:#dc3545;"><i class="fa-solid fa-circle-xmark"></i> Walang nahanap na GE sa branch na ito (${rawBranch}).</span>`;
+        display.innerHTML = `<span style="color:#dc3545; font-weight:bold;"><i class="fa-solid fa-circle-xmark"></i> Walang nahanap na GE sa branch na ito (${rawBranch}).</span>`;
       }
     }
 
@@ -556,12 +556,10 @@
         const res = await response.json();
         if (res.success) {
           allRequests = res.requests || [];
-          
           document.getElementById('countPending').innerText = res.summary ? res.summary.pending : 0;
           document.getElementById('countApproved').innerText = res.summary ? res.summary.approved : 0;
           document.getElementById('countDisapproved').innerText = res.summary ? res.summary.disapproved : 0;
           document.getElementById('countSSU').innerText = res.summary ? res.summary.ssu : 0;
-
           renderTable();
         } else {
           tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">' + (res.message || 'Error sa pagkuha ng data.') + '</td></tr>';
@@ -570,7 +568,7 @@
         if (retryCount < 2) {
           setTimeout(() => loadDashboardData(retryCount + 1), 1500);
         } else {
-          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Kumukonekta pa sa system. Mangyaring i-refresh ang page kung hindi kusa lumabas.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; color:red;">Kumukonekta pa sa system. Mangyaring i-refresh ang page.</td></tr>';
         }
       }
     }
@@ -587,7 +585,6 @@
         if (currentTab === 'SSU') matchesStatus = req.ssuDate !== '';
 
         if (!matchesStatus) return false;
-
         if (dFrom && req.timestamp.slice(0, 10) < dFrom) return false;
         if (dTo && req.timestamp.slice(0, 10) > dTo) return false;
 
@@ -720,7 +717,6 @@
       };
 
       let html = `
-        <!-- Color-Coded Timeline Tracker -->
         <div class="timeline-wrapper">
           <div class="step-item ${getStepClass(req.geStatus)}">
             <div class="step-icon"><i class="fa-solid fa-user-check"></i></div>
@@ -751,18 +747,9 @@
 
         <h4 style="color:var(--burgundy); margin: 15px 0 6px 0; font-size: 13px;">Approval Remarks & History</h4>
         <table class="view-table">
-          <tr>
-            <th>GE</th>
-            <td><b>${req.geStatus}</b> | ${req.geApprover || 'N/A'} <br><small>${req.geRemarks ? 'Remarks: ' + req.geRemarks : ''}</small></td>
-          </tr>
-          <tr>
-            <th>Hatid-Sundo</th>
-            <td><b>${req.hatidSundoStatus}</b> | ${req.hatidSundoApprover || 'N/A'} <br><small>${req.hatidSundoRemarks ? 'Remarks: ' + req.hatidSundoRemarks : ''}</small></td>
-          </tr>
-          <tr>
-            <th>Kawan/Tilap</th>
-            <td><b>${req.kawanStatus}</b> | ${req.kawanApprover || 'N/A'} <br><small>${req.kawanRemarks ? 'Remarks: ' + req.kawanRemarks : ''}</small></td>
-          </tr>
+          <tr><th>GE</th><td><b>${req.geStatus}</b> | ${req.geApprover || 'N/A'} <br><small>${req.geRemarks ? 'Remarks: ' + req.geRemarks : ''}</small></td></tr>
+          <tr><th>Hatid-Sundo</th><td><b>${req.hatidSundoStatus}</b> | ${req.hatidSundoApprover || 'N/A'} <br><small>${req.hatidSundoRemarks ? 'Remarks: ' + req.hatidSundoRemarks : ''}</small></td></tr>
+          <tr><th>Kawan/Tilap</th><td><b>${req.kawanStatus}</b> | ${req.kawanApprover || 'N/A'} <br><small>${req.kawanRemarks ? 'Remarks: ' + req.kawanRemarks : ''}</small></td></tr>
         </table>
 
         ${req.ssuDate ? `
@@ -824,7 +811,6 @@
       } catch (err) { alert('Error sa pagproseso ng approval.'); }
     }
 
-    // ADD KAWAN ROW WITH BLANK UNSELECTED DEFAULT OPTION
     function addKawanRow(savedKawan = '', savedPO = '') {
       const container = document.getElementById('kawanContainer');
       const div = document.createElement('div');
@@ -848,11 +834,11 @@
       document.getElementById('requestForm').reset();
       document.getElementById('kawanContainer').innerHTML = '';
       document.getElementById('requestedBy').value = currentUser.kapwaName;
+      document.getElementById('geDetectedInfo').innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
       loadFormDraft();
       openModal('requestModal');
     }
 
-    // Local Storage Form Auto-Save Draft
     function saveFormDraft() {
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
@@ -916,6 +902,7 @@
         document.getElementById('requestForm').reset();
         document.getElementById('kawanContainer').innerHTML = '';
         document.getElementById('requestedBy').value = currentUser.kapwaName;
+        document.getElementById('geDetectedInfo').innerHTML = `<span style="color:#666;">Pumili ng Branch sa itaas para makita ang GE.</span>`;
         addKawanRow();
       }
     }
@@ -1092,7 +1079,6 @@
       finally { btn.disabled = false; btn.innerText = 'I-SUBMIT FEEDBACK'; }
     });
 
-    // Advanced Search & Multi-Column Filtering
     function filterTable() {
       const term = document.getElementById('searchInput').value.toLowerCase();
       const rows = document.querySelectorAll('#tableBody tr');
