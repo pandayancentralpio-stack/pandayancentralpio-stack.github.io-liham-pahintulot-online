@@ -444,7 +444,7 @@
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw-8zpILjurBfuHwrk9rsZACetLjTKYocc3H7Vw0IiZzZdUEZigE1jO2kRCDF2RGvNl/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxPKxFdqUyvNGf31iJBJmFTW0d4RKq9oMfdpHN_5PCed4tKY5WtfdtC3w5f74-WLNZk/exec";
 
     let currentUser = null;
     let allRequests = [];
@@ -815,11 +815,15 @@
       } catch (err) { alert('Error sa pagproseso ng approval.'); }
     }
 
+    // ADD KAWAN ROW WITH BLANK UNSELECTED DEFAULT OPTION
     function addKawanRow(savedKawan = '', savedPO = '') {
       const container = document.getElementById('kawanContainer');
       const div = document.createElement('div');
       div.className = 'kawan-row';
-      let options = ddlKawans.map(k => `<option value="${k}" ${k === savedKawan ? 'selected' : ''}>${k}</option>`).join('');
+
+      let options = '<option value="" selected disabled>-- Pumili ng Kawan --</option>';
+      options += ddlKawans.map(k => `<option value="${k}" ${k === savedKawan ? 'selected' : ''}>${k}</option>`).join('');
+
       div.innerHTML = `
         <select class="form-control kawan-select" required onchange="saveFormDraft()">${options}</select>
         <input type="text" class="form-control po-input" placeholder="P.O. Number" value="${savedPO}" required oninput="saveFormDraft()">
@@ -843,7 +847,11 @@
     function saveFormDraft() {
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
-        kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
+        const select = row.querySelector('.kawan-select');
+        const poInput = row.querySelector('.po-input');
+        if (select && poInput) {
+          kawanList.push({ kawan: select.value, poNumber: poInput.value });
+        }
       });
 
       const draft = {
@@ -957,8 +965,19 @@
 
       const kawanList = [];
       document.querySelectorAll('.kawan-row').forEach(row => {
-        kawanList.push({ kawan: row.querySelector('.kawan-select').value, poNumber: row.querySelector('.po-input').value });
+        const select = row.querySelector('.kawan-select');
+        const poInput = row.querySelector('.po-input');
+        if (select && poInput && select.value) {
+          kawanList.push({ kawan: select.value, poNumber: poInput.value });
+        }
       });
+
+      if (kawanList.length === 0) {
+        alert("Pumili muna ng Kawan at maglagay ng P.O. Number.");
+        btn.disabled = false;
+        btn.innerText = 'I-SUBMIT REQUEST';
+        return;
+      }
 
       const modeVal = document.getElementById('lihamFor').value;
       let modeRemarks = '';
